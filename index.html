@@ -3,318 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patrícia Paiva - Psicóloga | Hipnoterapeuta | Escritora</title>
+    <title>Chatbot Terapia Individual</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Configuração personalizada do Tailwind para cores e fontes
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        // Paleta de cores definida: #003355, #0A9396, #E97451, #F0EAD6
-                        'patricia-dark-blue': '#003355', // Azul Escuro (para textos e elementos sóbrios)
-                        'patricia-teal': '#0A9396', // Teal (para botões de ação)
-                        'patricia-burnt-orange': '#E97451', // Laranja Queimado (para destaque ou botões secundários)
-                        'patricia-light-beige': '#F0EAD6', // Bege Claro (para fundo principal)
-                        'patricia-text': '#333', // Cor de texto principal (mantendo legibilidade)
-                        'patricia-heading': '#003355', // Cor para títulos principais
-                        'patricia-subheading': '#4F4F4F', // Cor para subtítulos/descrições
-                        // Cores para ícones flutuantes (mantendo as cores associadas)
-                         'whatsapp-float': '#25D366', // Verde WhatsApp
-                         'instagram-float': '#A66C8F', // Tom de rosa/roxo para Instagram (adaptado)
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'], // Fonte principal Inter
-                        heading: ['Lora', 'serif'], // Fonte Lora para títulos
-                    }
-                }
-            }
-        }
-    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Estilos personalizados adicionais */
         body {
-            font-family: 'Inter', sans-serif; /* Aplica a fonte principal */
-            color: #patricia-text; /* Cor de texto padrão */
-            line-height: 1.6;
-            background: linear-gradient(to bottom right, #F0EAD6, #e0d9c5); /* Gradiente suave no fundo */
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f0f0; /* Fundo neutro */
             display: flex;
-            flex-direction: column; /* Para alinhar o rodapé ao final */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 40px 20px; /* Padding maior no body */
+            padding: 20px;
         }
 
-        .linktree-container {
-            background-color: #ffffff; /* Fundo branco para o container */
-            padding: 40px; /* Padding aumentado */
-            border-radius: 20px; /* Bordas mais arredondadas */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra mais proeminente */
-            text-align: center;
-            max-width: 450px; /* Largura máxima ajustada para Linktree */
-            width: 100%;
-            border: 1px solid #e0e0e0; /* Borda sutil */
-            margin-bottom: 40px; /* Espaço antes do rodapé */
+        /* Paleta de Cores: #003355 (dark blue), #0A9396 (teal), #E97451 (burnt orange), #F0EAD6 (light beige) */
+        /* Usando variáveis CSS para as cores */
+        :root {
+            --patricia-dark-blue: #003355;
+            --patricia-teal: #0A9396;
+            --patricia-burnt-orange: #E97451;
+            --patricia-light-beige: #F0EAD6;
+            --patricia-text: #333;
         }
 
-        .profile-img {
-            width: 150px; /* Tamanho da foto aumentado */
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 25px; /* Espaço maior abaixo da foto */
-            border: 5px solid #0A9396; /* Borda com cor Teal */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            font-family: 'Lora', serif;
-            font-size: 2.5rem; /* Tamanho do título aumentado */
-            font-weight: 700;
-            color: #patricia-heading; /* Azul Escuro para o título */
-            margin-bottom: 8px; /* Espaço ajustado */
-        }
-
-        .description {
-            font-size: 1.1rem; /* Tamanho da descrição aumentado */
-            color: #patricia-subheading; /* Cor para descrição */
-            margin-bottom: 20px; /* Espaço ajustado para a bio vir abaixo */
-            line-height: 1.6;
-        }
-
-        /* Estilo para a seção de Bio */
-        .bio-section {
-            text-align: left; /* Alinhar texto da bio à esquerda */
-            margin-bottom: 35px; /* Espaço maior abaixo da bio */
-            color: #patricia-text;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        /* Estilo para botões de opção (usando Teal e Burnt Orange com gradientes) */
-        .btn-option {
-            display: flex; /* Usar flexbox para ícone e texto */
-            align-items: center;
-            justify-content: center; /* Centralizar conteúdo */
-            background: linear-gradient(to right, #0A9396, #097D80); /* Gradiente Teal */
-            color: white;
-            font-weight: 600;
-            padding: 18px 25px; /* Padding aumentado para botões */
-            border-radius: 12px; /* Bordas mais arredondadas nos botões */
-            text-decoration: none;
-            margin-bottom: 18px; /* Espaço maior entre botões */
-            transition: all 0.3s ease; /* Transição suave */
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15); /* Sombra nos botões */
-            border: none;
-        }
-
-        .btn-option:hover {
-            background: linear-gradient(to right, #097D80, #086a6d); /* Gradiente mais escuro no hover */
-            transform: translateY(-3px); /* Efeito de "levantar" no hover */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-        }
-
-         .btn-option i {
-             margin-right: 12px; /* Espaço maior entre ícone e texto */
-             font-size: 1.3rem; /* Tamanho do ícone ajustado */
-         }
-
-        /* Estilo específico para o botão de Escritora (usando Burnt Orange) */
-        .btn-option.writer-button {
-             background: linear-gradient(to right, #E97451, #d06244); /* Gradiente Laranja Queimado */
-        }
-         .btn-option.writer-button:hover {
-             background: linear-gradient(to right, #d06244, #b85338); /* Gradiente mais escuro */
-         }
-
-         /* Estilo específico para o botão de WhatsApp (usando verde) */
-        .btn-option.whatsapp-button {
-             background: linear-gradient(to right, #25D366, #128751); /* Gradiente Verde WhatsApp */
-        }
-         .btn-option.whatsapp-button:hover {
-             background: linear-gradient(to right, #128751, #0e6b40); /* Gradiente Verde mais escuro */
-         }
-
-         /* Estilo específico para o botão de Instagram (usando gradiente Instagram) */
-         .btn-option.instagram-button {
-             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); /* Gradiente Instagram */
-             color: white; /* Cor do texto branca para o gradiente do Instagram */
-         }
-         .btn-option.instagram-button:hover {
-              background: radial-gradient(circle at 30% 107%, #fce38a 0%, #fce38a 5%, #fc4a3a 45%, #c51a8d 60%, #234cc7 90%); /* Gradiente Instagram mais escuro */
-         }
-
-
-        /* Estilos para a seção Escritora */
-        .writer-section {
-            background-color: #ffffff; /* Fundo branco */
-            padding: 30px; /* Padding ajustado */
-            border-radius: 15px; /* Bordas arredondadas */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            margin-top: 30px;
-            text-align: center;
-            border: 1px solid #e0e0e0; /* Borda sutil */
-        }
-        .writer-section h3 {
-            font-family: 'Lora', serif;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: #patricia-dark-blue; /* Azul Escuro */
-        }
-        .writer-section p {
-            font-size: 1rem;
-            color: #patricia-text;
-            margin-bottom: 20px;
-            line-height: 1.6;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-         /* Estilos para ícones flutuantes */
-        .floating-icons {
-            position: fixed;
-            bottom: 20px; /* Distância do fundo */
-            right: 20px; /* Distância da direita */
-            z-index: 1000; /* Garante que fiquem acima de outros elementos */
+        .chatbot-container {
+            position: fixed; /* Fixo na tela */
+            bottom: 30px;
+            right: 30px; /* Posição padrão */
+            width: 350px;
+            height: 450px;
+            background-color: var(--patricia-light-beige); /* Light beige background */
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
             display: flex;
-            flex-direction: column; /* Ícones empilhados verticalmente */
-            align-items: center;
+            flex-direction: column;
+            font-family: 'Inter', sans-serif;
+            z-index: 1000; /* Acima de outros elementos */
+            transform: translateY(150%); /* Começa escondido */
+            transition: transform 0.4s ease-in-out;
         }
-        .floating-icon {
+
+        .chatbot-container.open {
+            transform: translateY(0); /* Desliza para cima quando aberto */
+        }
+
+        .chatbot-header {
+            background-color: var(--patricia-dark-blue); /* Dark blue header */
+            color: white;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer; /* Indica que o header é clicável */
+        }
+
+        .chatbot-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .chatbot-body {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto; /* Scroll para o conteúdo */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 85%;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background-color: #ffffff; /* White background for bot messages */
+            border: 1px solid #c3dafe; /* Borda sutil */
+            color: var(--patricia-text);
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: var(--patricia-teal); /* Teal background for user clicks */
+            color: white;
+        }
+
+        .chatbot-options {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Espaço entre os botões de opção */
+        }
+
+        .option-button {
+            background-color: var(--patricia-burnt-orange); /* Burnt orange for options */
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            text-align: left; /* Alinhar texto à esquerda */
+        }
+
+        .option-button:hover {
+            background-color: #d06244; /* Burnt orange mais escuro no hover */
+        }
+
+        .whatsapp-link {
+            display: inline-block;
+            background-color: #25D366; /* WhatsApp green */
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .whatsapp-link:hover {
+            background-color: #128751; /* Darker WhatsApp green */
+        }
+
+        .chatbot-open-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px; /* Posição padrão */
+            width: 60px;
+            height: 60px;
+            background-color: var(--patricia-dark-blue); /* Dark blue button */
+            color: white;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 55px; /* Tamanho do círculo aumentado */
-            height: 55px; /* Tamanho do círculo aumentado */
-            border-radius: 50%; /* Forma de círculo */
-            color: white;
-            font-size: 2rem; /* Tamanho do ícone aumentado */
-            margin-bottom: 12px; /* Espaço entre os ícones */
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .floating-icon:hover {
-            transform: scale(1.1); /* Efeito de zoom no hover */
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
-        }
-        .whatsapp-float {
-            background-color: #whatsapp-float; /* Verde WhatsApp */
-        }
-        .instagram-float {
-            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); /* Gradiente Instagram */
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1001; /* Acima do container */
+            transition: transform 0.2s ease;
         }
 
-
-         /* Responsividade */
-        @media (max-width: 768px) {
-            body {
-                padding: 20px 15px;
-            }
-            .linktree-container {
-                padding: 30px 20px;
-                border-radius: 15px;
-            }
-            .profile-img {
-                width: 120px;
-                height: 120px;
-                margin-bottom: 20px;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            .description {
-                font-size: 1rem;
-                margin-bottom: 20px; /* Ajustado */
-            }
-             .bio-section {
-                 margin-bottom: 25px; /* Ajustado */
-             }
-            .btn-option {
-                 padding: 15px 20px;
-                 border-radius: 10px;
-                 margin-bottom: 15px;
-                 font-size: 1rem;
-            }
-             .btn-option i {
-                 margin-right: 10px;
-                 font-size: 1.2rem;
-             }
-               .writer-section {
-                   padding: 25px 15px;
-                   margin-top: 25px;
-               }
-                .writer-section h3 {
-                    font-size: 1.5rem;
-                }
-                 .writer-section p {
-                     font-size: 0.95rem;
-                 }
-            .floating-icons {
-                 bottom: 15px;
-                 right: 15px;
-             }
-             .floating-icon {
-                 width: 50px;
-                 height: 50px;
-                 font-size: 1.8rem;
-                 margin-bottom: 10px;
-             }
-        }
+         .chatbot-open-button:hover {
+             transform: scale(1.1);
+         }
     </style>
 </head>
 <body>
 
-    <section class="section-beige py-12">
-        <div class="container linktree-container">
-            <img src="https://media.licdn.com/dms/image/v2/C4D03AQHoy6HE90-9cg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517058550993?e=1753315200&v=beta&t=CEjGdRw5vohgyYlXYgRTlTC5nh7YD8nlrXwpB2CzB5o" alt="Foto de Patrícia Paiva" class="profile-img mx-auto">
-
-            <h1 class="text-patricia-heading">
-                Patrícia Paiva
-            </h1>
-            <p class="description text-patricia-subheading">
-                Psicóloga Clínica, Hipnoterapeuta e Escritora
-            </p>
-
-            <div class="bio-section">
-                <p>
-                    Sou uma profissional que acredita na importância de cuidar do ser humano em sua totalidade — mente, corpo e espírito. Vejo na Psicologia, na saúde mental e na espiritualidade caminhos complementares para promover equilíbrio, autoconhecimento e bem-estar. Meu propósito é ajudar pessoas a viverem com mais sentido, superando desafios com leveza, propósito e conexão interior.
-                </p>
-            </div>
-
-
-            <a href="https://wa.me/559884574134" target="_blank" class="btn-option whatsapp-button"><i class="fab fa-whatsapp"></i> WhatsApp para Contato</a>
-            <a href="https://www.instagram.com/patricia.paiva.391/" target="_blank" class="btn-option instagram-button"><i class="fab fa-instagram"></i> Siga no Instagram</a>
-            <a href="#" class="btn-option"><i class="fas fa-user"></i> Saiba Mais sobre Terapia Individual</a>
-            <a href="#" class="btn-option"><i class="fas fa-brain"></i> Descubra a Hipnoterapia</a>
-            <a href="#" class="btn-option"><i class="fas fa-shield-alt"></i> Avaliação para Porte de Armas (Convênio PF)</a>
-             <a href="#" class="btn-option"><i class="fas fa-heart"></i> Saúde Mental e Bem-Estar</a>
-            <div class="writer-section">
-                <h3>Sobre o Livro: GIRASSÓIS DA VIDA</h3>
-                <p>
-                    Girassóis da Vida é um convite à reflexão sobre a existência, onde cada página revela a beleza e os desafios da jornada humana. Inspirado pela simbologia do girassol, o livro nos convida a buscar a luz, mesmo em tempos sombrios, e a valorizar cada instante com presença e gratidão. Em meio a histórias de amor, superação e descobertas, somos lembrados de que viver é um ato profundo de conexão, reinvenção e propósito — uma celebração da vida em sua plenitude, física e espiritual.
-                </p>
-            </div>
-
-        </div> </section>
-
-    <footer class="bg-patricia-dark-blue py-6 text-white text-center">
-        <div class="container">
-            <p>&copy; 2024 Patrícia Paiva. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-    <div class="floating-icons">
-        <a href="https://wa.me/559884574134" target="_blank" class="floating-icon whatsapp-float">
-            <i class="fab fa-whatsapp"></i>
-        </a>
-        <a href="https://www.instagram.com/patricia.paiva.391/" target="_blank" class="floating-icon instagram-float">
-            <i class="fab fa-instagram"></i>
-        </a>
+    <div class="chatbot-open-button" id="open-chatbot-terapia">
+        <i class="fas fa-user"></i>
     </div>
+
+    <div class="chatbot-container" id="chatbot-container-terapia">
+        <div class="chatbot-header" id="chatbot-header-terapia">
+            <span>Chatbot Terapia Individual</span>
+            <button class="chatbot-close-btn" id="close-chatbot-terapia">&times;</button>
+        </div>
+        <div class="chatbot-body" id="chatbot-body-terapia">
+            <div class="message bot">Olá! Posso te ajudar com algumas perguntas frequentes sobre Terapia Individual. Escolha um tema:</div>
+        </div>
+        <div class="chatbot-options" id="chatbot-options-terapia">
+            <button class="option-button" data-topic="o-que-e">O que é Terapia Individual?</button>
+             <button class="option-button" data-topic="quando-buscar">Quando Devo Buscar Terapia?</button>
+             <button class="option-button" data-topic="como-ajuda">Como a Terapia Pode Me Ajudar?</button>
+             <button class="option-button" data-topic="primeira-sessao">O Que Esperar da Primeira Sessão?</button>
+        </div>
+    </div>
+
+    <script>
+        const chatbotContainerTerapia = document.getElementById('chatbot-container-terapia');
+        const chatbotHeaderTerapia = document.getElementById('chatbot-header-terapia');
+        const chatbotBodyTerapia = document.getElementById('chatbot-body-terapia');
+        const chatbotOptionsTerapia = document.getElementById('chatbot-options-terapia');
+        const openChatbotBtnTerapia = document.getElementById('open-chatbot-terapia');
+        const closeChatbotBtnTerapia = document.getElementById('close-chatbot-terapia');
+
+        const whatsappNumber = '559884574134'; // Número de WhatsApp da Patrícia
+
+        // Mapeamento de tópicos para respostas
+        const responsesTerapia = {
+            "o-que-e": "Terapia individual é um espaço confidencial para você conversar com um psicólogo sobre seus pensamentos, sentimentos e desafios, buscando autoconhecimento e soluções. <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar Consulta via WhatsApp</a>",
+            "quando-buscar": "Você pode buscar terapia quando sentir dificuldades em lidar com emoções, passar por mudanças importantes, enfrentar problemas nos relacionamentos, ou simplesmente desejar se conhecer melhor. <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar Consulta via WhatsApp</a>",
+            "como-ajuda": "A terapia pode te ajudar a desenvolver novas perspectivas, aprender a lidar com o estresse e a ansiedade, melhorar seus relacionamentos, aumentar a autoconfiança e promover seu bem-estar geral. <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar Consulta via WhatsApp</a>",
+            "primeira-sessao": "Na primeira sessão, você terá a oportunidade de conhecer a Patrícia, falar sobre o que te trouxe até a terapia e entender como o processo terapêutico pode funcionar para você. É um momento de acolhimento e avaliação inicial. <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar Consulta via WhatsApp</a>",
+            "default": "Desculpe, não entendi. Por favor, escolha um dos tópicos acima."
+        };
+
+        // Função para adicionar mensagem ao corpo do chatbot
+        function addMessageTerapia(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.innerHTML = text; // Usar innerHTML para links
+            chatbotBodyTerapia.appendChild(messageElement);
+            // Rolar para a mensagem mais recente
+            chatbotBodyTerapia.scrollTop = chatbotBodyTerapia.scrollHeight;
+        }
+
+        // Event listener para os botões de opção
+        chatbotOptionsTerapia.addEventListener('click', function(event) {
+            if (event.target.classList.contains('option-button')) {
+                const topic = event.target.dataset.topic;
+                const userMessage = event.target.textContent;
+
+                // Adiciona a mensagem do usuário
+                addMessageTerapia(userMessage, 'user');
+
+                // Obtém e adiciona a resposta do bot
+                const botResponse = responsesTerapia[topic] || responsesTerapia["default"];
+                setTimeout(() => { // Simula um pequeno atraso na resposta do bot
+                    addMessageTerapia(botResponse, 'bot');
+                }, 500);
+
+                // Opcional: Esconder opções após a seleção ou mostrar novas opções
+                // chatbotOptionsTerapia.style.display = 'none';
+            }
+        });
+
+        // Event listener para abrir o chatbot
+        openChatbotBtnTerapia.addEventListener('click', function() {
+            chatbotContainerTerapia.classList.add('open');
+            openChatbotBtnTerapia.style.display = 'none'; // Esconde o botão de abrir
+        });
+
+        // Event listener para fechar o chatbot
+        closeChatbotBtnTerapia.addEventListener('click', function() {
+            chatbotContainerTerapia.classList.remove('open');
+            openChatbotBtnTerapia.style.display = 'flex'; // Mostra o botão de abrir novamente
+        });
+
+         // Event listener para fechar o chatbot clicando no header
+         chatbotHeaderTerapia.addEventListener('click', function(event) {
+             // Garante que não feche se clicar no botão de fechar
+             if (event.target.id !== 'close-chatbot-terapia') {
+                 chatbotContainerTerapia.classList.remove('open');
+                 openChatbotBtnTerapia.style.display = 'flex';
+             }
+         });
+    </script>
 
 </body>
 </html>
