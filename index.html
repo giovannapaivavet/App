@@ -3,127 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot Terapia Individual</title>
+    <title>Patrícia Paiva - Psicóloga | Hipnoterapeuta | Escritora</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configuração personalizada do Tailwind para cores e fontes
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Nova Paleta de cores: #D0CFB8, #95B4AA, #678863, #C8DDD1
+                        'patricia-sandstone': '#D0CFB8', // Sandstone (para fundo principal e elementos claros)
+                        'patricia-vintage-seagrass': '#95B4AA', // Vintage Seagrass (para botões de ação e elementos de destaque)
+                        'patricia-smoky-khaki': '#678863', // Smoky Khaki (para textos e elementos sóbrios)
+                        'patricia-soft-jade': '#C8DDD1', // Soft Jade (para fundos de chat e elementos secundários)
+                        'patricia-text': '#444', // Cor de texto principal (um cinza escuro para legibilidade)
+                        'patricia-heading': '#678863', // Cor para títulos principais
+                        'patricia-subheading': '#95B4AA', // Cor para subtítulos/descrições
+                        // Cores para ícones flutuantes (mantidas as cores associadas)
+                         'whatsapp-float': '#25D366', // Verde WhatsApp (mantido)
+                         'instagram-float': '#A66C8F', // Tom de rosa/roxo para Instagram (mantido)
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'], // Fonte principal Inter
+                        heading: ['Lora', 'serif'], // Fonte Lora para títulos
+                    }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Estilos personalizados adicionais */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f0f0; /* Fundo neutro */
+            font-family: 'Inter', sans-serif; /* Aplica a fonte principal */
+            color: var(--patricia-text); /* Cor de texto padrão */
+            line-height: 1.6;
+            background: linear-gradient(to bottom right, var(--patricia-sandstone), #c0bfa8); /* Gradiente suave no fundo com nova cor */
+            display: flex;
+            flex-direction: column; /* Para alinhar o rodapé ao final */
+            justify-content: center;
+            align-items: flex-start; /* Alinhar ao topo para melhor visualização em telas maiores */
+            min-height: 100vh;
+            padding: 40px 20px; /* Padding maior no body */
+        }
+
+        /* Usando variáveis CSS para as novas cores */
+         :root {
+            --patricia-sandstone: #D0CFB8;
+            --patricia-vintage-seagrass: #95B4AA;
+            --patricia-smoky-khaki: #678863;
+            --patricia-soft-jade: #C8DDD1;
+            --patricia-text: #444;
+        }
+
+
+        .linktree-container {
+            background-color: #ffffff; /* Fundo branco para o container */
+            padding: 40px; /* Padding aumentado */
+            border-radius: 20px; /* Bordas mais arredondadas */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra mais proeminente */
+            text-align: center;
+            max-width: 450px; /* Largura máxima ajustada para Linktree */
+            width: 100%;
+            border: 1px solid #e0e0e0; /* Borda sutil */
+            margin-bottom: 40px; /* Espaço antes do rodapé */
+        }
+
+        .profile-img {
+            width: 150px; /* Tamanho da foto aumentado */
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 25px; /* Espaço maior abaixo da foto */
+            border: 5px solid var(--patricia-vintage-seagrass); /* Borda com nova cor */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-family: 'Lora', serif;
+            font-size: 2.5rem; /* Tamanho do título aumentado */
+            font-weight: 700;
+            color: var(--patricia-heading); /* Nova cor para o título */
+            margin-bottom: 8px; /* Espaço ajustado */
+        }
+
+        .description {
+            font-size: 1.1rem; /* Tamanho da descrição aumentado */
+            color: var(--patricia-subheading); /* Nova cor para descrição */
+            margin-bottom: 20px; /* Espaço ajustado para a bio vir abaixo */
+            line-height: 1.6;
+        }
+
+        /* Estilo para a seção de Bio */
+        .bio-section {
+            text-align: left; /* Alinhar texto da bio à esquerda */
+            margin-bottom: 35px; /* Espaço maior abaixo da bio */
+            color: var(--patricia-text);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Estilo para botões de opção (usando novas cores com gradientes) */
+        .btn-option {
+            display: flex; /* Usar flexbox para ícone e texto */
+            align-items: center;
+            justify-content: center; /* Centralizar conteúdo */
+            background: linear-gradient(to right, var(--patricia-vintage-seagrass), #85a59b); /* Gradiente com nova cor */
+            color: white;
+            font-weight: 600;
+            padding: 18px 25px; /* Padding aumentado para botões */
+            border-radius: 12px; /* Bordas mais arredondadas nos botões */
+            text-decoration: none;
+            margin-bottom: 18px; /* Espaço maior entre botões */
+            transition: all 0.3s ease; /* Transição suave */
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15); /* Sombra nos botões */
+            border: none;
+            width: 100%; /* Define a largura total */
+        }
+
+        .btn-option:hover {
+            background: linear-gradient(to right, #85a59b, #76968c); /* Gradiente mais escuro no hover */
+            transform: translateY(-3px); /* Efeito de "levantar" no hover */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+
+         .btn-option i {
+             margin-right: 12px; /* Espaço maior entre ícone e texto */
+             font-size: 1.3rem; /* Tamanho do ícone ajustado */
+         }
+
+        /* Estilo específico para o botão de Escritora (usando Smoky Khaki) */
+        .btn-option.writer-button {
+             background: linear-gradient(to right, var(--patricia-smoky-khaki), #5a7a55); /* Gradiente com nova cor */
+        }
+         .btn-option.writer-button:hover {
+             background: linear-gradient(to right, #5a7a5ki, #4d6c4a); /* Gradiente mais escuro */
+         }
+
+         /* Estilo específico para o botão de WhatsApp (mantido) */
+        .btn-option.whatsapp-button {
+             background: linear-gradient(to right, #25D366, #128751); /* Mantido */
+        }
+         .btn-option.whatsapp-button:hover {
+             background: linear-gradient(to right, #128751, #0e6b40); /* Mantido */
+         }
+
+         /* Estilo específico para o botão de Instagram (mantido) */
+         .btn-option.instagram-button {
+             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); /* Mantido */
+             color: white;
+         }
+         .btn-option.instagram-button:hover {
+              background: radial-gradient(circle at 30% 107%, #fce38a 0%, #fce38a 5%, #fc4a3a 45%, #c51a8d 60%, #234cc7 90%); /* Mantido */
+         }
+
+
+        /* Estilos para a seção Escritora */
+        .writer-section {
+            background-color: #ffffff; /* Fundo branco */
+            padding: 30px; /* Padding ajustado */
+            border-radius: 15px; /* Bordas arredondadas */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-top: 30px;
+            text-align: center;
+            border: 1px solid #e0e0e0; /* Borda sutil */
+        }
+        .writer-section h3 {
+            font-family: 'Lora', serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--patricia-smoky-khaki); /* Nova cor */
+        }
+        .writer-section p {
+            font-size: 1rem;
+            color: var(--patricia-text);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+         /* Estilos para ícones flutuantes (Linktree) */
+        .floating-icons-linktree {
+            position: fixed;
+            bottom: 20px; /* Distância do fundo */
+            right: 20px; /* Distância da direita */
+            z-index: 999; /* Abaixo do chatbot */
+            display: flex;
+            flex-direction: column; /* Ícones empilhados verticalmente */
+            align-items: center;
+        }
+        .floating-icon-linktree {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        /* Paleta de Cores: #003355 (dark blue), #0A9396 (teal), #E97451 (burnt orange), #F0EAD6 (light beige) */
-        /* Usando variáveis CSS para as cores */
-        :root {
-            --patricia-dark-blue: #003355;
-            --patricia-teal: #0A9396;
-            --patricia-burnt-orange: #E97451;
-            --patricia-light-beige: #F0EAD6;
-            --patricia-text: #333;
-        }
-
-        .chatbot-container {
-            position: fixed; /* Fixo na tela */
-            bottom: 30px;
-            right: 30px; /* Posição padrão */
-            width: 350px;
-            height: 450px;
-            background-color: var(--patricia-light-beige); /* Light beige background */
-            border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            font-family: 'Inter', sans-serif;
-            z-index: 1000; /* Acima de outros elementos */
-            transform: translateY(150%); /* Começa escondido */
-            transition: transform 0.4s ease-in-out;
-        }
-
-        .chatbot-container.open {
-            transform: translateY(0); /* Desliza para cima quando aberto */
-        }
-
-        .chatbot-header {
-            background-color: var(--patricia-dark-blue); /* Dark blue header */
+            width: 55px; /* Tamanho do círculo aumentado */
+            height: 55px; /* Tamanho do círculo aumentado */
+            border-radius: 50%; /* Forma de círculo */
             color: white;
+            font-size: 2rem; /* Tamanho do ícone aumentado */
+            margin-bottom: 12px; /* Espaço entre os ícones */
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .floating-icon-linktree:hover {
+            transform: scale(1.1); /* Efeito de zoom no hover */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+        }
+        .whatsapp-float-linktree {
+            background-color: #25D366; /* Verde WhatsApp */
+            color: white; /* Cor do ícone branca */
+        }
+        .instagram-float-linktree {
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); /* Gradiente Instagram */
+             color: white; /* Cor do ícone branca */
+        }
+
+        /* Estilos para o Chat por Tópico Expansível */
+        .topic-chat-container {
+            background-color: var(--patricia-soft-jade); /* Fundo do chat */
+            border: 1px solid #e0e0e0; /* Borda sutil */
+            border-radius: 10px;
             padding: 15px;
-            font-size: 1.2rem;
+            margin-top: 15px;
+            text-align: left;
+            color: var(--patricia-text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: none; /* Inicialmente escondido */
+            flex-direction: column; /* Para organizar o conteúdo do chat */
+            gap: 10px; /* Espaço entre os elementos do chat */
+            width: 100%; /* Ocupa a largura total do container pai */
+        }
+
+        .topic-chat-container.active {
+            display: flex; /* Mostra quando ativo */
+        }
+
+        .topic-chat-container .chat-header {
             font-weight: 700;
+            color: var(--patricia-smoky-khaki); /* Cor do cabeçalho do chat */
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer; /* Indica que o header é clicável */
         }
 
-        .chatbot-close-btn {
+        .topic-chat-container .chat-close-btn {
             background: none;
             border: none;
-            color: white;
-            font-size: 1.5rem;
+            color: var(--patricia-smoky-khaki); /* Cor do botão fechar */
+            font-size: 1.2rem;
             cursor: pointer;
         }
 
-        .chatbot-body {
+
+        .topic-chat-container .chat-body {
             flex-grow: 1;
-            padding: 15px;
-            overflow-y: auto; /* Scroll para o conteúdo */
-            display: flex;
-            flex-direction: column;
+            overflow-y: auto; /* Scroll para as mensagens */
+            max-height: 200px; /* Altura máxima para o scroll */
+            padding-right: 10px; /* Espaço para a barra de scroll */
         }
 
-        .message {
-            margin-bottom: 15px;
-            padding: 10px;
+        .topic-chat-container .message {
+            margin-bottom: 10px;
+            padding: 8px;
             border-radius: 8px;
-            max-width: 85%;
+            max-width: 90%;
         }
 
-        .message.bot {
+        .topic-chat-container .message.bot {
             align-self: flex-start;
-            background-color: #ffffff; /* White background for bot messages */
-            border: 1px solid #c3dafe; /* Borda sutil */
+            background-color: var(--patricia-sandstone); /* Nova cor para mensagens do bot */
             color: var(--patricia-text);
         }
 
-        .message.user {
+        .topic-chat-container .message.user {
             align-self: flex-end;
-            background-color: var(--patricia-teal); /* Teal background for user clicks */
+            background-color: var(--patricia-vintage-seagrass); /* Nova cor para mensagens do usuário */
             color: white;
         }
 
-        .chatbot-options {
-            padding: 15px;
+         .topic-chat-container .chat-options {
             display: flex;
             flex-direction: column;
-            gap: 10px; /* Espaço entre os botões de opção */
+            gap: 8px; /* Espaço entre os botões de opção do chat */
+            margin-top: 10px;
+            border-top: 1px solid #eee; /* Separador */
+            padding-top: 10px;
         }
 
-        .option-button {
-            background-color: var(--patricia-burnt-orange); /* Burnt orange for options */
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: none;
+        .topic-chat-container .option-button-small {
+            background-color: #ffffff; /* Fundo branco para os botões de pergunta */
+            color: var(--patricia-text); /* Cor do texto dos botões de pergunta */
+            padding: 10px 12px; /* Padding ajustado */
+            border-radius: 8px; /* Bordas arredondadas */
+            border: 1px solid #ccc; /* Borda sutil */
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem; /* Tamanho da fonte ajustado */
             font-weight: 600;
             transition: background-color 0.3s ease;
-            text-align: left; /* Alinhar texto à esquerda */
+            text-align: left;
+            width: 100%; /* Ocupa a largura total */
         }
 
-        .option-button:hover {
-            background-color: #d06244; /* Burnt orange mais escuro no hover */
+        .topic-chat-container .option-button-small:hover {
+             background-color: #f0f0f0; /* Cinza claro no hover */
         }
 
-        .whatsapp-link {
-            display: inline-block;
+
+        .topic-chat-container .whatsapp-link {
+             display: inline-block;
             background-color: #25D366; /* WhatsApp green */
             color: white;
             padding: 8px 12px;
@@ -135,125 +329,421 @@
             transition: background-color 0.3s ease;
         }
 
-        .whatsapp-link:hover {
-            background-color: #128751; /* Darker WhatsApp green */
-        }
-
-        .chatbot-open-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px; /* Posição padrão */
-            width: 60px;
-            height: 60px;
-            background-color: var(--patricia-dark-blue); /* Dark blue button */
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            z-index: 1001; /* Acima do container */
-            transition: transform 0.2s ease;
-        }
-
-         .chatbot-open-button:hover {
-             transform: scale(1.1);
+         .topic-chat-container .whatsapp-link:hover {
+             background-color: #128751; /* Darker WhatsApp green */
          }
+
+
+         /* Responsividade */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            .linktree-container {
+                padding: 30px 20px;
+                border-radius: 15px;
+            }
+            .profile-img {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 20px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .description {
+                font-size: 1rem;
+                margin-bottom: 20px; /* Ajustado */
+            }
+             .bio-section {
+                 margin-bottom: 25px; /* Ajustado */
+             }
+            .btn-option {
+                 padding: 15px 20px;
+                 border-radius: 10px;
+                 margin-bottom: 15px;
+                 font-size: 1rem;
+            }
+             .btn-option i {
+                 margin-right: 10px;
+                 font-size: 1.2rem;
+             }
+             .floating-icons-linktree {
+                 bottom: 15px;
+                 right: 15px;
+             }
+             .floating-icon-linktree {
+                 width: 50px;
+                 height: 50px;
+                 font-size: 1.8rem;
+                 margin-bottom: 10px;
+             }
+             .topic-chat-container {
+                 padding: 10px;
+                 font-size: 0.9rem;
+             }
+             .topic-chat-container .chat-body {
+                 max-height: 150px; /* Ajuste para telas menores */
+             }
+              .topic-chat-container .option-button-small {
+                  font-size: 0.9rem;
+                  padding: 8px 10px;
+              }
+        }
     </style>
 </head>
 <body>
 
-    <div class="chatbot-open-button" id="open-chatbot-terapia">
-        <i class="fas fa-user"></i>
+    <section class="section-beige py-12">
+        <div class="container linktree-container">
+            <img src="https://media.licdn.com/dms/image/v2/C4D03AQHoy6HE90-9cg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517058550993?e=1753315200&v=beta&t=CEjGdRw5vohgyYlXYgRTlTC5nh7YD8nlrXwpB2CzB5o" alt="Foto de Patrícia Paiva" class="profile-img mx-auto">
+
+            <h1 class="text-patricia-heading">
+                Patrícia Paiva
+            </h1>
+            <p class="description text-patricia-subheading">
+                Psicóloga Clínica, Hipnoterapeuta e Escritora
+            </p>
+
+            <div class="bio-section">
+                <p>
+                    Acredito no cuidado integral do ser humano — mente, corpo e espírito. Com base na Psicologia, na saúde mental e na espiritualidade, ajudo pessoas a se reconectarem consigo mesmas, encontrando equilíbrio, propósito e leveza para viver com mais sentido.
+                </p>
+            </div>
+
+            <a href="https://wa.me/559884574134" target="_blank" class="btn-option whatsapp-button"><i class="fab fa-whatsapp"></i> WhatsApp para Contato</a>
+            <a href="https://www.instagram.com/patricia.paiva.391/" target="_blank" class="btn-option instagram-button"><i class="fab fa-instagram"></i> Siga no Instagram</a>
+
+            <button class="btn-option" data-topic="terapia"><i class="fas fa-user"></i> Saiba Mais sobre Terapia Individual</button>
+            <div class="topic-chat-container" id="chat-terapia">
+                <div class="chat-header">
+                    <span>Sobre Terapia Individual</span>
+                    <button class="chat-close-btn">&times;</button>
+                </div>
+                <div class="chat-body">
+                    </div>
+                <div class="chat-options">
+                    <button class="option-button-small" data-question-index="0">O que é e como funciona a terapia individual?</button>
+                    <button class="option-button-small" data-question-index="1">Para quem a terapia individual é mais indicada?</button>
+                    <button class="option-button-small" data-question-index="2">Quanto tempo geralmente dura um processo terapêutico?</button>
+                    <button class="option-button-small" data-question-index="3">Como saber se preciso de terapia?</button>
+                    <button class="option-button-small" data-question-index="4">Quais os benefícios de fazer terapia?</button>
+                    <button class="option-button-small" data-question-index="5">Como escolher o psicólogo ideal para mim?</button>
+                    <button class="option-button-small" data-question-index="6">A terapia online é tão eficaz quanto a presencial?</button>
+                    <button class="option-button-small" data-question-index="7">A confidencialidade nas sessões é garantida?</button>
+                </div>
+            </div>
+
+            <button class="btn-option" data-topic="hipnoterapia"><i class="fas fa-brain"></i> Descubra a Hipnoterapia</button>
+             <div class="topic-chat-container" id="chat-hipnoterapia">
+                <div class="chat-header">
+                    <span>Sobre Hipnoterapia</span>
+                    <button class="chat-close-btn">&times;</button>
+                </div>
+                <div class="chat-body">
+                     </div>
+                <div class="chat-options">
+                    <button class="option-button-small" data-question-index="0">O que exatamente é hipnoterapia e como ela difere da hipnose de palco?</button>
+                    <button class="option-button-small" data-question-index="1">Para quais tipos de problemas a hipnoterapia pode ser eficaz?</button>
+                    <button class="option-button-small" data-question-index="2">Vou perder o controle ou a consciência durante a hipnose?</button>
+                    <button class="option-button-small" data-question-index="3">Qual a sensação de estar em transe hipnótico?</button>
+                    <button class="option-button-small" data-question-index="4">A hipnoterapia é segura? Existem riscos?</button>
+                    <button class="option-button-small" data-question-index="5">Quantas sessões de hipnoterapia são geralmente necessárias?</button>
+                    <button class="option-button-small" data-question-index="6">Qualquer pessoa pode ser hipnotizada?</button>
+                    <button class="option-button-small" data-question-index="7">Como a hipnoterapia acessa o subconsciente?</button>
+                </div>
+            </div>
+
+            <button class="btn-option" data-topic="porte-armas"><i class="fas fa-shield-alt"></i> Convênio com Polícia Federal</button>
+             <div class="topic-chat-container" id="chat-porte-armas">
+                <div class="chat-header">
+                    <span>Sobre Convênio com Polícia Federal</span>
+                    <button class="chat-close-btn">&times;</button>
+                </div>
+                <div class="chat-body">
+                     </div>
+                <div class="chat-options">
+                     <button class="option-button-small" data-question-index="0">Como funciona o processo de avaliação psicológica para porte de arma?</button>
+                     <button class="option-button-small" data-question-index="1">Quais documentos são necessários para a avaliação?</button>
+                     <button class="option-button-small" data-question-index="2">Qual o custo da avaliação?</button>
+                     <button class="option-button-small" data-question-index="3">Quanto tempo leva para receber o resultado da avaliação?</button>
+                     <button class="option-button-small" data-question-index="4">A avaliação garante a aprovação para o porte de arma?</button>
+                     <button class="option-button-small" data-question-index="5">Em quais casos a avaliação pode resultar em inaptidão?</button>
+                     <button class="option-button-small" data-question-index="6">Posso fazer a avaliação mesmo sem ter experiência prévia com armas?</button>
+                     <button class="option-button-small" data-question-index="7">Como agendar a avaliação psicológica?</button>
+                </div>
+            </div>
+
+            <button class="btn-option" data-topic="saude-mental"><i class="fas fa-heart"></i> Saúde Mental e Bem-Estar</button>
+             <div class="topic-chat-container" id="chat-saude-mental">
+                <div class="chat-header">
+                    <span>Sobre Saúde Mental e Bem-Estar</span>
+                    <button class="chat-close-btn">&times;</button>
+                </div>
+                <div class="chat-body">
+                     </div>
+                <div class="chat-options">
+                     <button class="option-button-small" data-question-index="0">O que significa ter uma boa saúde mental?</button>
+                     <button class="option-button-small" data-question-index="1">Quais são os sinais de que a saúde mental não está bem?</button>
+                     <button class="option-button-small" data-question-index="2">Como o estresse do dia a dia afeta a saúde mental?</button>
+                     <button class="option-button-small" data-question-index="3">Quais hábitos posso adotar para melhorar meu bem-estar mental?</button>
+                     <button class="option-button-small" data-question-index="4">Qual a importância da conexão social para a saúde mental?</button>
+                     <button class="option-button-small" data-question-index="5">Como lidar com a ansiedade e preocupações excessivas?</button>
+                     <button class="option-button-small" data-question-index="6">Quando devo procurar ajuda profissional para minha saúde mental?</button>
+                     <button class="option-button-small" data-question-index="7">Existem recursos online confiáveis sobre saúde mental?</button>
+                </div>
+            </div>
+
+             <button class="btn-option" data-topic="espiritualidade"><i class="fas fa-leaf"></i> Espiritualidade e Saúde Integral</button>
+             <div class="topic-chat-container" id="chat-espiritualidade">
+                <div class="chat-header">
+                    <span>Sobre Espiritualidade e Saúde Integral</span>
+                    <button class="chat-close-btn">&times;</button>
+                </div>
+                <div class="chat-body">
+                     </div>
+                <div class="chat-options">
+                     <button class="option-button-small" data-question-index="0">Qual a conexão entre espiritualidade e saúde mental/física?</button>
+                     <button class="option-button-small" data-question-index="1">Espiritualidade é o mesmo que religião?</button>
+                     <button class="option-button-small" data-question-index="2">Como a espiritualidade pode ajudar a encontrar propósito na vida?</button>
+                     <button class="option-button-small" data-question-index="3">Quais práticas podem ajudar a desenvolver a espiritualidade?</button>
+                     <button class="option-button-small" data-question-index="4">Como a espiritualidade pode oferecer suporte em momentos difíceis?</button>
+                     <button class="option-button-small" data-question-index="5">Você aborda a espiritualidade em suas sessões terapêuticas?</button>
+                     <button class="option-button-small" data-question-index="6">A espiritualidade pode influenciar a forma como lidamos com o estresse?</button>
+                     <button class="option-button-small" data-question-index="7">Onde posso encontrar mais informações sobre espiritualidade e bem-estar?</button>
+                </div>
+            </div>
+
+            <div class="writer-section">
+                <h3>Sobre o Livro: GIRASSÓIS DA VIDA</h3>
+                <p>
+                    Girassóis da Vida é um convite à reflexão sobre a existência, onde cada página revela a beleza e os desafios da jornada humana. Inspirado pela simbologia do girassol, o livro nos convida a buscar a luz, mesmo em tempos sombrios, e a valorizar cada instante com presença e gratidão. Em meio a histórias de amor, superação e descobertas, somos lembrados de que viver é um ato profundo de conexão, reinvenção e propósito — uma celebração da vida em sua plenitude, física e espiritual.
+                </p>
+                 <button class="btn-option writer-button" data-topic="girassois-vida"><i class="fas fa-book"></i> Saber Mais sobre o Livro</button>
+                 <div class="topic-chat-container" id="chat-girassois-vida">
+                    <div class="chat-header">
+                        <span>Sobre o Livro: GIRASSÓIS DA VIDA</span>
+                        <button class="chat-close-btn">&times;</button>
+                    </div>
+                     <div class="chat-body">
+                         </div>
+                    <div class="chat-options">
+                         <button class="option-button-small" data-question-index="0">Qual a inspiração por trás do livro 'Girassóis da Vida'?</button>
+                         <button class="option-button-small" data-question-index="1">Qual o tema central abordado no livro?</button>
+                         <button class="option-button-small" data-question-index="2">O livro é baseado em histórias reais?</button>
+                         <button class="option-button-small" data-question-index="3">Quando será a data oficial de lançamento?</button>
+                         <button class="option-button-small" data-question-index="4">Onde poderei comprar o livro após o lançamento?</button>
+                         <button class="option-button-small" data-question-index="5">Haverá eventos de lançamento ou sessões de autógrafos?</button>
+                         <button class="option-button-small" data-question-index="6">O livro aborda temas de psicologia ou espiritualidade?</button>
+                         <button class="option-button-small" data-question-index="7">Como posso ficar sabendo das novidades sobre o livro?</button>
+                    </div>
+                </div>
+            </div>
+
+        </div> </section>
+
+    <footer class="bg-patricia-dark-blue py-6 text-white text-center">
+        <div class="container">
+            <p>&copy; 2024 Patrícia Paiva. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <div class="floating-icons-linktree">
+        <a href="https://wa.me/559884574134" target="_blank" class="floating-icon-linktree whatsapp-float-linktree">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://www.instagram.com/patricia.paiva.391/" target="_blank" class="floating-icon-linktree instagram-float-linktree">
+            <i class="fab fa-instagram"></i>
+        </a>
     </div>
 
-    <div class="chatbot-container" id="chatbot-container-terapia">
-        <div class="chatbot-header" id="chatbot-header-terapia">
-            <span>Chatbot Terapia Individual</span>
-            <button class="chatbot-close-btn" id="close-chatbot-terapia">&times;</button>
-        </div>
-        <div class="chatbot-body" id="chatbot-body-terapia">
-            <div class="message bot">Olá! Posso te ajudar com algumas perguntas frequentes sobre Terapia Individual. Escolha um tema:</div>
-        </div>
-        <div class="chatbot-options" id="chatbot-options-terapia">
-            <button class="option-button" data-topic="o-que-e">O que é Terapia Individual?</button>
-             <button class="option-button" data-topic="quando-buscar">Quando Devo Buscar Terapia?</button>
-             <button class="option-button" data-topic="como-ajuda">Como a Terapia Pode Me Ajudar?</button>
-             <button class="option-button" data-topic="primeira-sessao">O Que Esperar da Primeira Sessão?</button>
-        </div>
-    </div>
 
     <script>
-        const chatbotContainerTerapia = document.getElementById('chatbot-container-terapia');
-        const chatbotHeaderTerapia = document.getElementById('chatbot-header-terapia');
-        const chatbotBodyTerapia = document.getElementById('chatbot-body-terapia');
-        const chatbotOptionsTerapia = document.getElementById('chatbot-options-terapia');
-        const openChatbotBtnTerapia = document.getElementById('open-chatbot-terapia');
-        const closeChatbotBtnTerapia = document.getElementById('close-chatbot-terapia');
-
+        const topicButtons = document.querySelectorAll('.btn-option[data-topic]');
+        const topicChatContainers = document.querySelectorAll('.topic-chat-container');
         const whatsappNumber = '559884574134'; // Número de WhatsApp da Patrícia
 
-        // Mapeamento de tópicos para respostas
-        const responsesTerapia = {
-            "o-que-e": "Terapia individual é um espaço confidencial para você conversar com um psicólogo sobre seus pensamentos, sentimentos e desafios, buscando autoconhecimento e soluções. <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar Consulta via WhatsApp</a>",
-            "quando-buscar": "Você pode buscar terapia quando sentir dificuldades em lidar com emoções, passar por mudanças importantes, enfrentar problemas nos relacionamentos, ou simplesmente desejar se conhecer melhor. <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar Consulta via WhatsApp</a>",
-            "como-ajuda": "A terapia pode te ajudar a desenvolver novas perspectivas, aprender a lidar com o estresse e a ansiedade, melhorar seus relacionamentos, aumentar a autoconfiança e promover seu bem-estar geral. <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar Consulta via WhatsApp</a>",
-            "primeira-sessao": "Na primeira sessão, você terá a oportunidade de conhecer a Patrícia, falar sobre o que te trouxe até a terapia e entender como o processo terapêutico pode funcionar para você. É um momento de acolhimento e avaliação inicial. <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar Consulta via WhatsApp</a>",
-            "default": "Desculpe, não entendi. Por favor, escolha um dos tópicos acima."
+        // Conteúdo dos chats por tópico (ajustado para 8 perguntas)
+        const topicContent = {
+            "terapia": {
+                title: "Sobre Terapia Individual",
+                questions: [
+                    { q: "O que é e como funciona a terapia individual?", a: "Terapia individual é um espaço confidencial para você conversar com um psicólogo sobre seus pensamentos, sentimentos e desafios, buscando autoconhecimento e soluções." },
+                    { q: "Para quem a terapia individual é mais indicada?", a: "Você pode buscar terapia quando sentir dificuldades em lidar com emoções, passar por mudanças importantes, enfrentar problemas nos relacionamentos, ou simplesmente desejar se conhecer melhor." },
+                    { q: "Quanto tempo geralmente dura um processo terapêutico?", a: "A duração varia para cada pessoa, dependendo das necessidades e objetivos. É algo definido em conjunto com o terapeuta." },
+                    { q: "Como saber se preciso de terapia?", a: "Se você se sente sobrecarregado, ansioso, triste, ou enfrenta dificuldades que impactam sua vida diária, a terapia pode ser muito útil." },
+                    { q: "Quais os benefícios de fazer terapia?", a: "Ajuda a desenvolver autoconhecimento, lidar com emoções, melhorar relacionamentos, superar traumas e alcançar maior bem-estar." },
+                    { q: "Como escolher o psicólogo ideal para mim?", a: "Busque um profissional com quem você se sinta confortável e seguro para compartilhar suas questões." },
+                    { q: "A terapia online é tão eficaz quanto a presencial?", a: "Sim, estudos mostram que a terapia online pode ser tão eficaz quanto a presencial, oferecendo flexibilidade e comodidade." },
+                    { q: "A confidencialidade nas sessões é garantida?", a: "Sim, a confidencialidade é um pilar da ética profissional do psicólogo, garantindo um espaço seguro para você se abrir." }
+                ]
+            },
+            "hipnoterapia": {
+                title: "Sobre Hipnoterapia",
+                questions: [
+                    { q: "O que exatamente é hipnoterapia e como ela difere da hipnose de palco?", a: "Hipnoterapia é uma abordagem terapêutica séria que utiliza o estado de relaxamento profundo (hipnose) para trabalhar questões clínicas, diferente do entretenimento de palco." },
+                    { q: "Para quais tipos de problemas a hipnoterapia pode ser eficaz?", a: "Pode ajudar em casos de ansiedade, fobias, medos, hábitos indesejados, controle da dor, estresse pós-traumático e aumento da autoconfiança." },
+                    { q: "Vou perder o controle ou a consciência durante a hipnose?", a: "Não, você não perde o controle. A hipnose é um estado natural de foco aumentado, onde você permanece consciente e no controle." },
+                    { q: "Qual a sensação de estar em transe hipnótico?", a: "É uma sensação de relaxamento profundo, como estar em um estado de sonho acordado, mas com a mente focada." },
+                    { q: "A hipnoterapia é segura? Existem riscos?", a: "Sim, é uma prática segura quando realizada por um profissional qualificado. Não há riscos de 'ficar preso' na hipnose." },
+                    { q: "Quantas sessões de hipnoterapia são geralmente necessárias?", a: "A hipnoterapia é frequentemente uma terapia breve, com resultados perceptíveis em poucas sessões, dependendo da questão a ser tratada." },
+                    { q: "Qualquer pessoa pode ser hipnotizada?", a: "A maioria das pessoas pode experimentar o estado hipnótico em algum grau, dependendo da sua disposição e da técnica utilizada." },
+                    { q: "Como a hipnoterapia acessa o subconsciente?", a: "Ao relaxar a mente consciente, a hipnose facilita o acesso a padrões de pensamento e emoções armazenados no subconsciente, permitindo ressignificação." }
+                ]
+            },
+            "porte-armas": {
+                 title: "Sobre Convênio com Polícia Federal",
+                 questions: [
+                     { q: "Como funciona o processo de avaliação psicológica para porte de arma?", a: "É uma avaliação que verifica se o indivíduo possui as condições psicológicas adequadas para manusear uma arma de fogo de forma segura e responsável, seguindo as normas da Polícia Federal." },
+                     { q: "Quais documentos preciso apresentar para a avaliação?", a: "Você precisará apresentar documentos de identificação e, possivelmente, outros específicos solicitados pela Polícia Federal. Confirme os requisitos ao agendar." },
+                     { q: "Qual o custo da avaliação?", a: "O valor da avaliação psicológica para porte de arma é regulamentado e pode ser informado detalhadamente ao entrar em contato para agendar." },
+                     { q: "Quanto tempo leva para receber o resultado da avaliação?", a: "O resultado da avaliação é geralmente liberado em um prazo determinado após a sessão, conforme os trâmites do convênio com a Polícia Federal." },
+                     { q: "A avaliação garante a aprovação para o porte de arma?", a: "A avaliação é uma etapa do processo. A aprovação final depende do cumprimento de todos os requisitos e da análise da Polícia Federal." },
+                     { q: "Em quais casos a avaliação pode resultar em inaptidão?", a: "Condições psicológicas que comprometam o julgamento, controle de impulsos ou estabilidade emocional podem levar à inaptidão. A avaliação é individualizada." },
+                     { q: "Posso fazer a avaliação mesmo sem ter experiência prévia com armas?", a: "Sim, a avaliação foca nas condições psicológicas, não na experiência prévia com armas. A instrução de tiro é uma etapa separada." },
+                     { q: "Como agendar a avaliação psicológica para porte de arma?", a: "Você pode agendar sua avaliação diretamente entrando em contato via WhatsApp." }
+                 ]
+            },
+            "saude-mental": {
+                 title: "Sobre Saúde Mental e Bem-Estar",
+                 questions: [
+                     { q: "O que significa ter uma boa saúde mental?", a: "É ter equilíbrio emocional, psicológico e social, sendo capaz de lidar com os desafios da vida, gerenciar emoções e manter relacionamentos saudáveis." },
+                     { q: "Quais são os sinais de que a saúde mental não está bem?", a: "Sinais incluem tristeza persistente, ansiedade excessiva, alterações no sono/apetite, isolamento social, falta de energia e dificuldade de concentração." },
+                     { q: "Como o estresse do dia a dia afeta a saúde mental?", a: "O estresse crônico pode levar a problemas como ansiedade, depressão, esgotamento (burnout) e impactar negativamente o bem-estar geral." },
+                     { q: "Quais hábitos posso adotar para melhorar meu bem-estar mental?", a: "Praticar atividades físicas, ter uma alimentação equilibrada, garantir sono de qualidade, dedicar tempo a hobbies e manter conexões sociais são essenciais." },
+                     { q: "Qual a importância da conexão social para a saúde mental?", a: "Relações sociais de apoio são fundamentais para o bem-estar, reduzindo o sentimento de solidão e oferecendo suporte em momentos difíceis." },
+                     { q: "Como lidar com a ansiedade e preocupações excessivas?", a: "Técnicas de respiração, mindfulness, terapia e identificar as causas das preocupações podem ajudar a gerenciar a ansiedade." },
+                     { q: "Quando devo procurar ajuda profissional para minha saúde mental?", a: "Se suas dificuldades emocionais estão impactando sua vida diária, trabalho, estudos ou relacionamentos de forma significativa, é hora de buscar um psicólogo." },
+                     { q: "Existem recursos online confiáveis sobre saúde mental?", a: "Sim, há diversos sites e materiais informativos de fontes confiáveis (como organizações de saúde) que oferecem suporte e informação." }
+                 ]
+            },
+            "girassois-vida": {
+                 title: "Sobre o Livro: GIRASSÓIS DA VIDA",
+                 questions: [
+                     { q: "Qual a inspiração por trás do livro 'Girassóis da Vida'?", a: "O livro é inspirado na simbologia do girassol, que busca a luz e representa resiliência, positividade e a capacidade de encontrar beleza mesmo em tempos desafiadores." },
+                     { q: "Qual o tema central abordado no livro?", a: "O livro convida à reflexão sobre a existência, a jornada humana, o amor, a superação, a busca por propósito e a conexão entre o físico e o espiritual." },
+                     { q: "O livro é baseado em histórias reais?", a: "O livro mistura reflexões pessoais com narrativas que tocam em experiências universais, mas não é estritamente baseado em histórias reais específicas." },
+                     { q: "Quando será a data oficial de lançamento?", a: "O livro está em processo final de escrita e edição. A data de lançamento será anunciada em breve nos meus canais oficiais." },
+                     { q: "Onde poderei comprar o livro após o lançamento?", a: "Informações sobre as plataformas de venda (online e/ou físicas) serão divulgadas mais perto do lançamento." },
+                     { q: "Haverá eventos de lançamento ou sessões de autógrafos?", a: "Sim, há planos para eventos de lançamento e sessões de autógrafos. Acompanhe minhas redes sociais para as datas e locais!" },
+                     { q: "O livro aborda temas de psicologia ou espiritualidade?", a: "O livro integra reflexões sobre a jornada interior, autoconhecimento e a busca por sentido, temas que se conectam tanto à psicologia quanto à espiritualidade." },
+                     { q: "Como posso ficar sabendo das novidades sobre o livro?", a: "Siga meus perfis nas redes sociais (Instagram, etc.) e fique atento(a) aos anúncios. Você também pode entrar em contato via WhatsApp para receber atualizações." }
+                 ]
+            },
+            "espiritualidade": {
+                 title: "Sobre Espiritualidade e Saúde Integral",
+                 questions: [
+                     { q: "Qual a conexão entre espiritualidade e saúde mental/física?", a: "A espiritualidade pode oferecer um senso de propósito, esperança e resiliência, o que impacta positivamente a forma como lidamos com o estresse, a dor e os desafios, beneficiando mente e corpo." },
+                     { q: "Espiritualidade é o mesmo que religião?", a: "Não necessariamente. Religião é um sistema organizado de crenças e rituais. Espiritualidade é uma busca mais ampla por significado, conexão com algo maior e transcendência, podendo ou não estar ligada a uma religião." },
+                     { q: "Como a espiritualidade pode ajudar a encontrar propósito na vida?", a: "Ao explorar questões de significado e valores, a espiritualidade pode ajudar a alinhar suas ações com o que é importante para você, trazendo um senso de direção e propósito." },
+                     { q: "Quais práticas podem ajudar a desenvolver a espiritualidade?", a: "Meditação, mindfulness, tempo na natureza, reflexão, práticas de gratidão, serviço voluntário e conexão com uma comunidade de valores compartilhados são algumas formas." },
+                     { q: "Como a espiritualidade pode oferecer suporte em momentos difíceis?", a: "A fé, a esperança e o senso de conexão com algo maior ou com uma comunidade podem ser fontes de força e conforto ao enfrentar perdas, doenças ou crises." },
+                     { q: "Você aborda a espiritualidade em suas sessões terapêuticas?", a: "Sim, de forma respeitosa e ética, conforme o interesse e as crenças do paciente. A espiritualidade é vista como uma dimensão importante do ser humano que pode ser explorada no processo terapêutico." },
+                     { q: "A espiritualidade pode influenciar a forma como lidamos com o estresse?", a: "Sim, práticas espirituais como meditação e mindfulness podem reduzir a resposta ao estresse. Um senso de propósito e conexão também pode aumentar a resiliência." },
+                     { q: "Onde posso encontrar mais informações sobre espiritualidade e bem-estar?", a: "Você pode explorar livros, palestras, workshops, grupos de estudo ou conversar com profissionais que integram essa dimensão em suas práticas." }
+                 ]
+            }
         };
 
-        // Função para adicionar mensagem ao corpo do chatbot
-        function addMessageTerapia(text, sender) {
+        // Esconder todos os chats inicialmente
+        topicChatContainers.forEach(container => {
+            container.style.display = 'none';
+        });
+
+        topicButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const topic = this.dataset.topic;
+                const targetChatContainer = document.getElementById(`chat-${topic}`);
+                const content = topicContent[topic];
+
+                // Esconder qualquer chat que esteja aberto
+                topicChatContainers.forEach(container => {
+                    if (container.id !== `chat-${topic}`) {
+                        container.style.display = 'none';
+                         container.classList.remove('active'); // Remover classe active
+                    }
+                });
+
+                if (targetChatContainer && content) {
+                    const chatHeader = targetChatContainer.querySelector('.chat-header span');
+                    const chatBody = targetChatContainer.querySelector('.chat-body');
+                    const chatOptions = targetChatContainer.querySelector('.chat-options');
+                    const chatCloseBtn = targetChatContainer.querySelector('.chat-close-btn');
+
+                    // Preencher o chat do tópico
+                    chatHeader.textContent = content.title;
+                    chatBody.innerHTML = ''; // Limpar mensagens anteriores
+                    chatOptions.innerHTML = ''; // Limpar opções anteriores
+
+                    content.questions.forEach((item, index) => {
+                        const questionButton = document.createElement('button');
+                        questionButton.classList.add('option-button-small');
+                        questionButton.textContent = item.q;
+                        questionButton.dataset.questionIndex = index; // Armazena o índice da pergunta
+                        chatOptions.appendChild(questionButton);
+
+                        // Adicionar listener para as perguntas dentro deste chat
+                        questionButton.addEventListener('click', function() {
+                            const qIndex = this.dataset.questionIndex;
+                            const userQ = this.textContent;
+                            const botA = content.questions[qIndex].a;
+
+                            // Adicionar pergunta do usuário
+                            addMessageToSpecificChat(chatBody, userQ, 'user');
+
+                            // Adicionar resposta do bot com link do WhatsApp
+                            setTimeout(() => { // Simula um pequeno atraso
+                                addMessageToSpecificChat(chatBody, `${botA} <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar/Saber Mais via WhatsApp</a>`, 'bot');
+                            }, 500);
+                        });
+                    });
+
+                    // Alternar a visibilidade do chat clicado
+                    if (targetChatContainer.style.display === 'none' || targetChatContainer.style.display === '') {
+                        targetChatContainer.style.display = 'flex'; // Usar flex para layout interno
+                         targetChatContainer.classList.add('active'); // Adicionar classe active
+                         chatBody.scrollTop = chatBody.scrollHeight; // Rolar para o topo ao abrir
+                    } else {
+                        targetChatContainer.style.display = 'none';
+                         targetChatContainer.classList.remove('active'); // Remover classe active
+                    }
+
+                    // Adicionar listener para o botão fechar deste chat específico
+                    chatCloseBtn.onclick = function() {
+                         targetChatContainer.style.display = 'none';
+                         targetChatContainer.classList.remove('active'); // Remover classe active
+                         chatBody.innerHTML = ''; // Resetar chat
+                    }
+                }
+            });
+        });
+
+        // Função para adicionar mensagem a um corpo de chat específico
+        function addMessageToSpecificChat(chatBodyElement, text, sender) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender);
             messageElement.innerHTML = text; // Usar innerHTML para links
-            chatbotBodyTerapia.appendChild(messageElement);
+            chatBodyElement.appendChild(messageElement);
             // Rolar para a mensagem mais recente
-            chatbotBodyTerapia.scrollTop = chatbotBodyTerapia.scrollHeight;
+            chatBodyElement.scrollTop = chatBodyElement.scrollHeight;
         }
 
-        // Event listener para os botões de opção
-        chatbotOptionsTerapia.addEventListener('click', function(event) {
-            if (event.target.classList.contains('option-button')) {
-                const topic = event.target.dataset.topic;
-                const userMessage = event.target.textContent;
-
-                // Adiciona a mensagem do usuário
-                addMessageTerapia(userMessage, 'user');
-
-                // Obtém e adiciona a resposta do bot
-                const botResponse = responsesTerapia[topic] || responsesTerapia["default"];
-                setTimeout(() => { // Simula um pequeno atraso na resposta do bot
-                    addMessageTerapia(botResponse, 'bot');
-                }, 500);
-
-                // Opcional: Esconder opções após a seleção ou mostrar novas opções
-                // chatbotOptionsTerapia.style.display = 'none';
-            }
-        });
-
-        // Event listener para abrir o chatbot
-        openChatbotBtnTerapia.addEventListener('click', function() {
-            chatbotContainerTerapia.classList.add('open');
-            openChatbotBtnTerapia.style.display = 'none'; // Esconde o botão de abrir
-        });
-
-        // Event listener para fechar o chatbot
-        closeChatbotBtnTerapia.addEventListener('click', function() {
-            chatbotContainerTerapia.classList.remove('open');
-            openChatbotBtnTerapia.style.display = 'flex'; // Mostra o botão de abrir novamente
-        });
-
-         // Event listener para fechar o chatbot clicando no header
-         chatbotHeaderTerapia.addEventListener('click', function(event) {
-             // Garante que não feche se clicar no botão de fechar
-             if (event.target.id !== 'close-chatbot-terapia') {
-                 chatbotContainerTerapia.classList.remove('open');
-                 openChatbotBtnTerapia.style.display = 'flex';
-             }
+        // Adicionar listeners para os botões fechar que já estão no HTML (para garantir que funcionem)
+         document.querySelectorAll('.topic-chat-container .chat-close-btn').forEach(btn => {
+             btn.addEventListener('click', function() {
+                 const container = this.closest('.topic-chat-container');
+                 if (container) {
+                     container.style.display = 'none';
+                     container.classList.remove('active');
+                      const chatBody = container.querySelector('.chat-body');
+                      if(chatBody) {
+                           chatBody.innerHTML = ''; // Resetar chat
+                      }
+                 }
+             });
          });
+
+
     </script>
 
 </body>
