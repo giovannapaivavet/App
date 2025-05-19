@@ -17,8 +17,8 @@
                         'patricia-smoky-khaki': '#678863', // Smoky Khaki (para textos e elementos sóbrios)
                         'patricia-soft-jade': '#C8DDD1', // Soft Jade (para fundos de chat e elementos secundários)
                         'patricia-text': '#444', // Cor de texto principal (um cinza escuro para legibilidade)
-                        'patricia-heading': '#678863', // Cor para títulos principais (mantido, mas o H1 será preto)
-                        'patricia-subheading': '#95B4AA', // Cor para subtítulos/descrições (será substituído por patricia-text na descrição)
+                        'patricia-heading': '#000', // Cor para títulos principais (PRETO)
+                        'patricia-subheading': '#444', // Cor para subtítulos/descrições (MAIS ESCURA)
                         // Cores para ícones flutuantes (mantidas as cores associadas)
                          'whatsapp-float': '#25D366', // Verde WhatsApp (mantido)
                          'instagram-float': '#A66C8F', // Tom de rosa/roxo para Instagram (mantido)
@@ -621,10 +621,10 @@
     </footer>
 
     <div class="floating-icons-linktree">
-        <a href="https://wa.me/559884574134" target="_blank" class="floating-icon-linktree whatsapp-float-linktree">
+        <a href="https://wa.me/559884574134" target="_blank" class="floating-icon whatsapp-float-linktree">
             <i class="fab fa-whatsapp"></i>
         </a>
-        <a href="https://www.instagram.com/patricia.paiva.391/" target="_blank" class="floating-icon-linktree instagram-float-linktree">
+        <a href="https://www.instagram.com/patricia.paiva.391/" target="_blank" class="floating-icon instagram-float-linktree">
             <i class="fab fa-instagram"></i>
         </a>
     </div>
@@ -764,9 +764,9 @@
                             // Adicionar pergunta do usuário
                             addMessageToSpecificChat(chatBody, userQ, 'user');
 
-                            // Adicionar resposta do bot com link do WhatsApp
+                            // Adicionar resposta do bot SEM o link do WhatsApp
                             setTimeout(() => { // Simula um pequeno atraso
-                                addMessageToSpecificChat(chatBody, `${botA} <a href='https://wa.me/${whatsappNumber}' target='_blank' class='whatsapp-link'>Agendar/Saber Mais via WhatsApp</a>`, 'bot');
+                                addMessageToSpecificChat(chatBody, botA, 'bot'); // Removido o link do WhatsApp aqui
                             }, 500);
                         });
                     });
@@ -802,7 +802,7 @@
         function addMessageToSpecificChat(chatBodyElement, text, sender) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender);
-            messageElement.innerHTML = text; // Usar innerHTML para links
+            messageElement.innerHTML = text; // Usar innerHTML para links (se houver outros links)
             chatBodyElement.appendChild(messageElement);
             // Rolar para a mensagem mais recente
             chatBodyElement.scrollTop = chatBodyElement.scrollHeight;
