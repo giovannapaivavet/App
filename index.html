@@ -17,8 +17,8 @@
                         'patricia-smoky-khaki': '#678863', // Smoky Khaki (para textos e elementos sóbrios)
                         'patricia-soft-jade': '#C8DDD1', // Soft Jade (para fundos de chat e elementos secundários)
                         'patricia-text': '#444', // Cor de texto principal (um cinza escuro para legibilidade)
-                        'patricia-heading': '#678863', // Cor para títulos principais
-                        'patricia-subheading': '#95B4AA', // Cor para subtítulos/descrições
+                        'patricia-heading': '#678863', // Cor para títulos principais (mantido, mas o H1 será preto)
+                        'patricia-subheading': '#95B4AA', // Cor para subtítulos/descrições (será substituído por patricia-text na descrição)
                         // Cores para ícones flutuantes (mantidas as cores associadas)
                          'whatsapp-float': '#25D366', // Verde WhatsApp (mantido)
                          'instagram-float': '#A66C8F', // Tom de rosa/roxo para Instagram (mantido)
@@ -54,7 +54,7 @@
             --patricia-vintage-seagrass: #95B4AA;
             --patricia-smoky-khaki: #678863;
             --patricia-soft-jade: #C8DDD1;
-            --patricia-text: #444;
+            --patricia-text: #444; /* Cor de texto mais escura */
         }
 
 
@@ -82,15 +82,15 @@
 
         h1 {
             font-family: 'Lora', serif;
-            font-size: 2.5rem; /* Tamanho do título aumentado */
+            font-size: 2.8rem; /* Tamanho do título AUMENTADO */
             font-weight: 700;
-            color: var(--patricia-heading); /* Nova cor para o título */
+            color: #000; /* Cor do título PRETO */
             margin-bottom: 8px; /* Espaço ajustado */
         }
 
         .description {
             font-size: 1.1rem; /* Tamanho da descrição aumentado */
-            color: var(--patricia-subheading); /* Nova cor para descrição */
+            color: var(--patricia-text); /* Cor da descrição MAIS ESCURA (usando a variável de texto principal) */
             margin-bottom: 20px; /* Espaço ajustado para a bio vir abaixo */
             line-height: 1.6;
         }
@@ -151,7 +151,7 @@
 
          /* Estilo específico para o botão de Instagram (mantido) */
          .btn-option.instagram-button {
-             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); /* Mantido */
+             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); /* Gradiente Instagram */
              color: white;
          }
          .btn-option.instagram-button:hover {
@@ -223,7 +223,7 @@
 
         /* Estilos para o Chat por Tópico Expansível */
         .topic-chat-container {
-            background-color: var(--patricia-soft-jade); /* Fundo do chat */
+            background-color: #f9f9f9; /* Fundo leve para o chat, similar à imagem */
             border: 1px solid #e0e0e0; /* Borda sutil */
             border-radius: 10px;
             padding: 15px;
@@ -264,9 +264,11 @@
 
         .topic-chat-container .chat-body {
             flex-grow: 1;
+            padding-right: 10px; /* Espaço para a barra de scroll */
             overflow-y: auto; /* Scroll para as mensagens */
             max-height: 200px; /* Altura máxima para o scroll */
-            padding-right: 10px; /* Espaço para a barra de scroll */
+             display: flex; /* Para alinhar mensagens */
+             flex-direction: column;
         }
 
         .topic-chat-container .message {
@@ -274,21 +276,22 @@
             padding: 8px;
             border-radius: 8px;
             max-width: 90%;
+             align-self: flex-start; /* Padrão para mensagens */
         }
 
         .topic-chat-container .message.bot {
-            align-self: flex-start;
             background-color: var(--patricia-sandstone); /* Nova cor para mensagens do bot */
             color: var(--patricia-text);
         }
 
         .topic-chat-container .message.user {
-            align-self: flex-end;
+            align-self: flex-end; /* Alinha mensagens do usuário para a direita */
             background-color: var(--patricia-vintage-seagrass); /* Nova cor para mensagens do usuário */
             color: white;
         }
 
          .topic-chat-container .chat-options {
+            padding: 15px;
             display: flex;
             flex-direction: column;
             gap: 8px; /* Espaço entre os botões de opção do chat */
@@ -298,11 +301,11 @@
         }
 
         .topic-chat-container .option-button-small {
-            background-color: #ffffff; /* Fundo branco para os botões de pergunta */
+            background-color: #e0e0e0; /* Fundo cinza claro para os botões de pergunta, similar à imagem */
             color: var(--patricia-text); /* Cor do texto dos botões de pergunta */
             padding: 10px 12px; /* Padding ajustado */
             border-radius: 8px; /* Bordas arredondadas */
-            border: 1px solid #ccc; /* Borda sutil */
+            border: none; /* Sem borda */
             cursor: pointer;
             font-size: 0.95rem; /* Tamanho da fonte ajustado */
             font-weight: 600;
@@ -312,7 +315,7 @@
         }
 
         .topic-chat-container .option-button-small:hover {
-             background-color: #f0f0f0; /* Cinza claro no hover */
+             background-color: #ccc; /* Cinza mais escuro no hover */
         }
 
 
@@ -333,6 +336,41 @@
              background-color: #128751; /* Darker WhatsApp green */
          }
 
+         .chat-footer-buttons {
+             display: flex;
+             justify-content: space-between; /* Espaço entre os botões */
+             align-items: center;
+             padding: 15px;
+             border-top: 1px solid #eee; /* Separador */
+         }
+
+         .chat-footer-buttons .chat-back-button {
+            background-color: #ccc; /* Cinza para o botão voltar */
+            color: var(--patricia-text); /* Cor do texto do botão voltar */
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            text-align: center;
+         }
+
+         .chat-footer-buttons .chat-back-button:hover {
+             background-color: #b3b3b3; /* Cinza mais escuro no hover */
+         }
+
+         .chat-footer-buttons .whatsapp-icon-link {
+             color: #25D366; /* Cor do ícone WhatsApp */
+             font-size: 2rem; /* Tamanho do ícone */
+             transition: color 0.3s ease;
+         }
+
+         .chat-footer-buttons .whatsapp-icon-link:hover {
+             color: #128751; /* Cor mais escura no hover */
+         }
+
 
          /* Responsividade */
         @media (max-width: 768px) {
@@ -349,7 +387,7 @@
                 margin-bottom: 20px;
             }
             h1 {
-                font-size: 2rem;
+                font-size: 2.2rem; /* Ajuste para mobile */
             }
             .description {
                 font-size: 1rem;
@@ -389,6 +427,16 @@
                   font-size: 0.9rem;
                   padding: 8px 10px;
               }
+              .chat-footer-buttons {
+                  padding: 10px;
+              }
+               .chat-footer-buttons .chat-back-button {
+                   padding: 8px 12px;
+                   font-size: 0.9rem;
+               }
+               .chat-footer-buttons .whatsapp-icon-link {
+                   font-size: 1.8rem;
+               }
         }
     </style>
 </head>
@@ -414,7 +462,7 @@
             <a href="https://wa.me/559884574134" target="_blank" class="btn-option whatsapp-button"><i class="fab fa-whatsapp"></i> WhatsApp para Contato</a>
             <a href="https://www.instagram.com/patricia.paiva.391/" target="_blank" class="btn-option instagram-button"><i class="fab fa-instagram"></i> Siga no Instagram</a>
 
-            <button class="btn-option" data-topic="terapia"><i class="fas fa-user"></i> Saiba Mais sobre Terapia Individual</button>
+            <button class="btn-option" data-topic="terapia"><i class="fas fa-user"></i> Terapia Individual</button>
             <div class="topic-chat-container" id="chat-terapia">
                 <div class="chat-header">
                     <span>Sobre Terapia Individual</span>
@@ -431,6 +479,10 @@
                     <button class="option-button-small" data-question-index="5">Como escolher o psicólogo ideal para mim?</button>
                     <button class="option-button-small" data-question-index="6">A terapia online é tão eficaz quanto a presencial?</button>
                     <button class="option-button-small" data-question-index="7">A confidencialidade nas sessões é garantida?</button>
+                </div>
+                 <div class="chat-footer-buttons">
+                    <button class="chat-back-button">Voltar</button>
+                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
 
@@ -452,12 +504,16 @@
                     <button class="option-button-small" data-question-index="6">Qualquer pessoa pode ser hipnotizada?</button>
                     <button class="option-button-small" data-question-index="7">Como a hipnoterapia acessa o subconsciente?</button>
                 </div>
+                 <div class="chat-footer-buttons">
+                    <button class="chat-back-button">Voltar</button>
+                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
+                </div>
             </div>
 
-            <button class="btn-option" data-topic="porte-armas"><i class="fas fa-shield-alt"></i> Convênio com Polícia Federal</button>
+            <button class="btn-option" data-topic="porte-armas"><i class="fas fa-shield-alt"></i> Convênio Polícia Federal</button>
              <div class="topic-chat-container" id="chat-porte-armas">
                 <div class="chat-header">
-                    <span>Sobre Convênio com Polícia Federal</span>
+                    <span>Sobre Convênio Polícia Federal</span>
                     <button class="chat-close-btn">&times;</button>
                 </div>
                 <div class="chat-body">
@@ -471,6 +527,10 @@
                      <button class="option-button-small" data-question-index="5">Em quais casos a avaliação pode resultar em inaptidão?</button>
                      <button class="option-button-small" data-question-index="6">Posso fazer a avaliação mesmo sem ter experiência prévia com armas?</button>
                      <button class="option-button-small" data-question-index="7">Como agendar a avaliação psicológica?</button>
+                </div>
+                 <div class="chat-footer-buttons">
+                    <button class="chat-back-button">Voltar</button>
+                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
 
@@ -492,12 +552,16 @@
                      <button class="option-button-small" data-question-index="6">Quando devo procurar ajuda profissional para minha saúde mental?</button>
                      <button class="option-button-small" data-question-index="7">Existem recursos online confiáveis sobre saúde mental?</button>
                 </div>
+                 <div class="chat-footer-buttons">
+                    <button class="chat-back-button">Voltar</button>
+                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
+                </div>
             </div>
 
-             <button class="btn-option" data-topic="espiritualidade"><i class="fas fa-leaf"></i> Espiritualidade e Saúde Integral</button>
+             <button class="btn-option" data-topic="espiritualidade"><i class="fas fa-leaf"></i> Espiritualidade e Saúde</button>
              <div class="topic-chat-container" id="chat-espiritualidade">
                 <div class="chat-header">
-                    <span>Sobre Espiritualidade e Saúde Integral</span>
+                    <span>Sobre Espiritualidade e Saúde</span>
                     <button class="chat-close-btn">&times;</button>
                 </div>
                 <div class="chat-body">
@@ -512,6 +576,10 @@
                      <button class="option-button-small" data-question-index="6">A espiritualidade pode influenciar a forma como lidamos com o estresse?</button>
                      <button class="option-button-small" data-question-index="7">Onde posso encontrar mais informações sobre espiritualidade e bem-estar?</button>
                 </div>
+                 <div class="chat-footer-buttons">
+                    <button class="chat-back-button">Voltar</button>
+                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
+                </div>
             </div>
 
             <div class="writer-section">
@@ -519,10 +587,10 @@
                 <p>
                     Girassóis da Vida é um convite à reflexão sobre a existência, onde cada página revela a beleza e os desafios da jornada humana. Inspirado pela simbologia do girassol, o livro nos convida a buscar a luz, mesmo em tempos sombrios, e a valorizar cada instante com presença e gratidão. Em meio a histórias de amor, superação e descobertas, somos lembrados de que viver é um ato profundo de conexão, reinvenção e propósito — uma celebração da vida em sua plenitude, física e espiritual.
                 </p>
-                 <button class="btn-option writer-button" data-topic="girassois-vida"><i class="fas fa-book"></i> Saber Mais sobre o Livro</button>
+                 <button class="btn-option writer-button" data-topic="girassois-vida"><i class="fas fa-book"></i> Sobre o Livro</button>
                  <div class="topic-chat-container" id="chat-girassois-vida">
                     <div class="chat-header">
-                        <span>Sobre o Livro: GIRASSÓIS DA VIDA</span>
+                        <span>Sobre o Livro</span>
                         <button class="chat-close-btn">&times;</button>
                     </div>
                      <div class="chat-body">
@@ -536,6 +604,10 @@
                          <button class="option-button-small" data-question-index="5">Haverá eventos de lançamento ou sessões de autógrafos?</button>
                          <button class="option-button-small" data-question-index="6">O livro aborda temas de psicologia ou espiritualidade?</button>
                          <button class="option-button-small" data-question-index="7">Como posso ficar sabendo das novidades sobre o livro?</button>
+                    </div>
+                     <div class="chat-footer-buttons">
+                        <button class="chat-back-button">Voltar</button>
+                        <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
@@ -566,7 +638,7 @@
         // Conteúdo dos chats por tópico (ajustado para 8 perguntas)
         const topicContent = {
             "terapia": {
-                title: "Sobre Terapia Individual",
+                title: "Sobre Terapia Individual", // Título atualizado
                 questions: [
                     { q: "O que é e como funciona a terapia individual?", a: "Terapia individual é um espaço confidencial para você conversar com um psicólogo sobre seus pensamentos, sentimentos e desafios, buscando autoconhecimento e soluções." },
                     { q: "Para quem a terapia individual é mais indicada?", a: "Você pode buscar terapia quando sentir dificuldades em lidar com emoções, passar por mudanças importantes, enfrentar problemas nos relacionamentos, ou simplesmente desejar se conhecer melhor." },
@@ -592,7 +664,7 @@
                 ]
             },
             "porte-armas": {
-                 title: "Sobre Convênio com Polícia Federal",
+                 title: "Sobre Convênio Polícia Federal", // Título atualizado
                  questions: [
                      { q: "Como funciona o processo de avaliação psicológica para porte de arma?", a: "É uma avaliação que verifica se o indivíduo possui as condições psicológicas adequadas para manusear uma arma de fogo de forma segura e responsável, seguindo as normas da Polícia Federal." },
                      { q: "Quais documentos preciso apresentar para a avaliação?", a: "Você precisará apresentar documentos de identificação e, possivelmente, outros específicos solicitados pela Polícia Federal. Confirme os requisitos ao agendar." },
@@ -605,7 +677,7 @@
                  ]
             },
             "saude-mental": {
-                 title: "Sobre Saúde Mental e Bem-Estar",
+                 title: "Sobre Saúde Mental e Bem-Estar", // Título atualizado
                  questions: [
                      { q: "O que significa ter uma boa saúde mental?", a: "É ter equilíbrio emocional, psicológico e social, sendo capaz de lidar com os desafios da vida, gerenciar emoções e manter relacionamentos saudáveis." },
                      { q: "Quais são os sinais de que a saúde mental não está bem?", a: "Sinais incluem tristeza persistente, ansiedade excessiva, alterações no sono/apetite, isolamento social, falta de energia e dificuldade de concentração." },
@@ -618,7 +690,7 @@
                  ]
             },
             "girassois-vida": {
-                 title: "Sobre o Livro: GIRASSÓIS DA VIDA",
+                 title: "Sobre o Livro", // Título reduzido
                  questions: [
                      { q: "Qual a inspiração por trás do livro 'Girassóis da Vida'?", a: "O livro é inspirado na simbologia do girassol, que busca a luz e representa resiliência, positividade e a capacidade de encontrar beleza mesmo em tempos desafiadores." },
                      { q: "Qual o tema central abordado no livro?", a: "O livro convida à reflexão sobre a existência, a jornada humana, o amor, a superação, a busca por propósito e a conexão entre o físico e o espiritual." },
@@ -631,7 +703,7 @@
                  ]
             },
             "espiritualidade": {
-                 title: "Sobre Espiritualidade e Saúde Integral",
+                 title: "Sobre Espiritualidade e Saúde", // Título atualizado
                  questions: [
                      { q: "Qual a conexão entre espiritualidade e saúde mental/física?", a: "A espiritualidade pode oferecer um senso de propósito, esperança e resiliência, o que impacta positivamente a forma como lidamos com o estresse, a dor e os desafios, beneficiando mente e corpo." },
                      { q: "Espiritualidade é o mesmo que religião?", a: "Não necessariamente. Religião é um sistema organizado de crenças e rituais. Espiritualidade é uma busca mais ampla por significado, conexão com algo maior e transcendência, podendo ou não estar ligada a uma religião." },
@@ -669,6 +741,7 @@
                     const chatBody = targetChatContainer.querySelector('.chat-body');
                     const chatOptions = targetChatContainer.querySelector('.chat-options');
                     const chatCloseBtn = targetChatContainer.querySelector('.chat-close-btn');
+                     const chatBackButton = targetChatContainer.querySelector('.chat-back-button'); // Botão Voltar dentro do chat
 
                     // Preencher o chat do tópico
                     chatHeader.textContent = content.title;
@@ -714,6 +787,13 @@
                          targetChatContainer.classList.remove('active'); // Remover classe active
                          chatBody.innerHTML = ''; // Resetar chat
                     }
+
+                     // Adicionar listener para o botão Voltar deste chat específico
+                    chatBackButton.onclick = function() {
+                         targetChatContainer.style.display = 'none';
+                         targetChatContainer.classList.remove('active'); // Remover classe active
+                         chatBody.innerHTML = ''; // Resetar chat
+                    }
                 }
             });
         });
@@ -728,8 +808,22 @@
             chatBodyElement.scrollTop = chatBodyElement.scrollHeight;
         }
 
-        // Adicionar listeners para os botões fechar que já estão no HTML (para garantir que funcionem)
+        // Adicionar listeners para os botões fechar e voltar que já estão no HTML (para garantir que funcionem)
          document.querySelectorAll('.topic-chat-container .chat-close-btn').forEach(btn => {
+             btn.addEventListener('click', function() {
+                 const container = this.closest('.topic-chat-container');
+                 if (container) {
+                     container.style.display = 'none';
+                     container.classList.remove('active');
+                      const chatBody = container.querySelector('.chat-body');
+                      if(chatBody) {
+                           chatBody.innerHTML = ''; // Resetar chat
+                      }
+                 }
+             });
+         });
+
+         document.querySelectorAll('.topic-chat-container .chat-back-button').forEach(btn => {
              btn.addEventListener('click', function() {
                  const container = this.closest('.topic-chat-container');
                  if (container) {
