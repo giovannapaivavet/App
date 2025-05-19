@@ -31,7 +31,7 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;660;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Estilos personalizados adicionais */
@@ -294,11 +294,16 @@
             padding: 15px;
             display: flex;
             flex-direction: column;
-            gap: 8px; /* Espaço entre os botões de opção do chat */
+            gap: 8px; /* Espaço entre os botões de opção */
             margin-top: 10px;
             border-top: 1px solid #eee; /* Separador */
             padding-top: 10px;
-        }
+         }
+
+         .topic-chat-container .chat-options.hidden {
+             display: none; /* Esconde as opções quando uma resposta é mostrada */
+         }
+
 
         .topic-chat-container .option-button-small {
             background-color: #e0e0e0; /* Fundo cinza claro para os botões de pergunta, similar à imagem */
@@ -318,6 +323,78 @@
              background-color: #ccc; /* Cinza mais escuro no hover */
         }
 
+        /* Estilo para o combo de resposta */
+        .answer-combo {
+            background-color: var(--patricia-soft-jade); /* Cor de fundo para o combo de resposta */
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex; /* Usar flexbox para alinhar itens */
+            flex-direction: column; /* Itens empilhados */
+            gap: 10px; /* Espaço entre os itens do combo */
+        }
+
+        .answer-combo .question-text {
+            font-weight: 600;
+            color: var(--patricia-smoky-khaki); /* Cor da pergunta no combo */
+        }
+
+        .answer-combo .answer-text {
+            color: var(--patricia-text); /* Cor da resposta no combo */
+        }
+
+        .answer-combo .combo-footer {
+            display: flex; /* Para colocar os botões e o WhatsApp lado a lado */
+            justify-content: space-between; /* Espaço entre os elementos */
+            align-items: center;
+            margin-top: 15px; /* Espaço acima do rodapé do combo */
+            padding-top: 10px;
+            border-top: 1px solid #eee; /* Separador */
+        }
+
+        .answer-combo .button-group {
+            display: flex; /* Para colocar os botões lado a lado */
+            gap: 10px; /* Espaço entre os botões */
+            flex-grow: 1; /* Para ocupar o espaço disponível */
+            margin-right: 10px; /* Espaço entre os botões e o WhatsApp */
+             flex-wrap: wrap; /* Permite quebra de linha em telas menores */
+        }
+
+        .answer-combo .back-to-questions-btn,
+        .answer-combo .close-chat-btn-inline {
+            background-color: #ffffff; /* Fundo branco */
+            color: var(--patricia-text); /* Cor do texto */
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc; /* Borda sutil para botões brancos */
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            text-align: center;
+            flex-grow: 1; /* Para ocupar o espaço disponível */
+             min-width: 100px; /* Largura mínima para os botões */
+        }
+
+        .answer-combo .back-to-questions-btn:hover,
+        .answer-combo .close-chat-btn-inline:hover {
+             background-color: #f0f0f0; /* Cinza muito claro no hover */
+             border-color: #b3b3b3; /* Borda mais escura no hover */
+        }
+
+        .answer-combo .whatsapp-icon-link-combo {
+             color: #25D366; /* Cor do ícone WhatsApp */
+             font-size: 2rem; /* Tamanho do ícone */
+             transition: color 0.3s ease;
+        }
+
+         .answer-combo .whatsapp-icon-link-combo:hover {
+             color: #128751; /* Cor mais escura no hover */
+         }
+
 
         .topic-chat-container .whatsapp-link {
              display: inline-block;
@@ -336,39 +413,14 @@
              background-color: #128751; /* Darker WhatsApp green */
          }
 
-         .chat-footer-buttons {
-             display: flex;
-             justify-content: space-between; /* Espaço entre os botões */
-             align-items: center;
-             padding: 15px;
-             border-top: 1px solid #eee; /* Separador */
-         }
-
+         /* Remove o botão Voltar do rodapé do chat principal */
          .chat-footer-buttons .chat-back-button {
-            background-color: #ccc; /* Cinza para o botão voltar */
-            color: var(--patricia-text); /* Cor do texto do botão voltar */
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-            text-align: center;
+             display: none;
          }
 
-         .chat-footer-buttons .chat-back-button:hover {
-             background-color: #b3b3b3; /* Cinza mais escuro no hover */
-         }
-
+         /* Remove o ícone do WhatsApp do rodapé do chat principal */
          .chat-footer-buttons .whatsapp-icon-link {
-             color: #25D366; /* Cor do ícone WhatsApp */
-             font-size: 2rem; /* Tamanho do ícone */
-             transition: color 0.3s ease;
-         }
-
-         .chat-footer-buttons .whatsapp-icon-link:hover {
-             color: #128751; /* Cor mais escura no hover */
+             display: none;
          }
 
 
@@ -427,15 +479,22 @@
                   font-size: 0.9rem;
                   padding: 8px 10px;
               }
-              .chat-footer-buttons {
-                  padding: 10px;
+              .answer-combo .combo-footer {
+                  flex-direction: column; /* Empilha em telas menores */
+                  align-items: flex-start;
               }
-               .chat-footer-buttons .chat-back-button {
-                   padding: 8px 12px;
-                   font-size: 0.9rem;
+               .answer-combo .button-group {
+                   width: 100%; /* Ocupa largura total em telas menores */
+                   margin-right: 0;
+                   margin-bottom: 10px;
                }
-               .chat-footer-buttons .whatsapp-icon-link {
-                   font-size: 1.8rem;
+               .answer-combo .back-to-questions-btn,
+               .answer-combo .close-chat-btn-inline {
+                   flex-grow: 0; /* Desativa o flex-grow em telas menores */
+                   width: 100%; /* Ocupa largura total */
+               }
+               .answer-combo .whatsapp-icon-link-combo {
+                   align-self: center; /* Centraliza o ícone em telas menores */
                }
         }
     </style>
@@ -480,11 +539,7 @@
                     <button class="option-button-small" data-question-index="6">A terapia online é tão eficaz quanto a presencial?</button>
                     <button class="option-button-small" data-question-index="7">A confidencialidade nas sessões é garantida?</button>
                 </div>
-                 <div class="chat-footer-buttons">
-                    <button class="chat-back-button">Voltar</button>
-                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
+                 </div>
 
             <button class="btn-option" data-topic="hipnoterapia"><i class="fas fa-brain"></i> Descubra a Hipnoterapia</button>
              <div class="topic-chat-container" id="chat-hipnoterapia">
@@ -504,11 +559,7 @@
                     <button class="option-button-small" data-question-index="6">Qualquer pessoa pode ser hipnotizada?</button>
                     <button class="option-button-small" data-question-index="7">Como a hipnoterapia acessa o subconsciente?</button>
                 </div>
-                 <div class="chat-footer-buttons">
-                    <button class="chat-back-button">Voltar</button>
-                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
+                 </div>
 
             <button class="btn-option" data-topic="porte-armas"><i class="fas fa-shield-alt"></i> Convênio Polícia Federal</button>
              <div class="topic-chat-container" id="chat-porte-armas">
@@ -528,11 +579,7 @@
                      <button class="option-button-small" data-question-index="6">Posso fazer a avaliação mesmo sem ter experiência prévia com armas?</button>
                      <button class="option-button-small" data-question-index="7">Como agendar a avaliação psicológica?</button>
                 </div>
-                 <div class="chat-footer-buttons">
-                    <button class="chat-back-button">Voltar</button>
-                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
+                 </div>
 
             <button class="btn-option" data-topic="saude-mental"><i class="fas fa-heart"></i> Saúde Mental e Bem-Estar</button>
              <div class="topic-chat-container" id="chat-saude-mental">
@@ -552,11 +599,7 @@
                      <button class="option-button-small" data-question-index="6">Quando devo procurar ajuda profissional para minha saúde mental?</button>
                      <button class="option-button-small" data-question-index="7">Existem recursos online confiáveis sobre saúde mental?</button>
                 </div>
-                 <div class="chat-footer-buttons">
-                    <button class="chat-back-button">Voltar</button>
-                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
+                 </div>
 
              <button class="btn-option" data-topic="espiritualidade"><i class="fas fa-leaf"></i> Espiritualidade e Saúde</button>
              <div class="topic-chat-container" id="chat-espiritualidade">
@@ -576,11 +619,7 @@
                      <button class="option-button-small" data-question-index="6">A espiritualidade pode influenciar a forma como lidamos com o estresse?</button>
                      <button class="option-button-small" data-question-index="7">Onde posso encontrar mais informações sobre espiritualidade e bem-estar?</button>
                 </div>
-                 <div class="chat-footer-buttons">
-                    <button class="chat-back-button">Voltar</button>
-                    <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
+                 </div>
 
             <div class="writer-section">
                 <h3>Sobre o Livro: GIRASSÓIS DA VIDA</h3>
@@ -605,11 +644,7 @@
                          <button class="option-button-small" data-question-index="6">O livro aborda temas de psicologia ou espiritualidade?</button>
                          <button class="option-button-small" data-question-index="7">Como posso ficar sabendo das novidades sobre o livro?</button>
                     </div>
-                     <div class="chat-footer-buttons">
-                        <button class="chat-back-button">Voltar</button>
-                        <a href="https://wa.me/559884574134" target="_blank" class="whatsapp-icon-link"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
+                     </div>
             </div>
 
         </div> </section>
@@ -741,11 +776,10 @@
                     const chatBody = targetChatContainer.querySelector('.chat-body');
                     const chatOptions = targetChatContainer.querySelector('.chat-options');
                     const chatCloseBtn = targetChatContainer.querySelector('.chat-close-btn');
-                     const chatBackButton = targetChatContainer.querySelector('.chat-back-button'); // Botão Voltar dentro do chat
 
                     // Preencher o chat do tópico
                     chatHeader.textContent = content.title;
-                    chatBody.innerHTML = ''; // Limpar mensagens anteriores
+                    chatBody.innerHTML = ''; // Limpar mensagens e combos anteriores
                     chatOptions.innerHTML = ''; // Limpar opções anteriores
 
                     content.questions.forEach((item, index) => {
@@ -761,13 +795,73 @@
                             const userQ = this.textContent;
                             const botA = content.questions[qIndex].a;
 
-                            // Adicionar pergunta do usuário
-                            addMessageToSpecificChat(chatBody, userQ, 'user');
+                            // Esconder as opções de pergunta
+                            chatOptions.classList.add('hidden');
+                            chatBody.innerHTML = ''; // Limpar o corpo antes de adicionar o novo combo
 
-                            // Adicionar resposta do bot SEM o link do WhatsApp
-                            setTimeout(() => { // Simula um pequeno atraso
-                                addMessageToSpecificChat(chatBody, botA, 'bot'); // Removido o link do WhatsApp aqui
-                            }, 500);
+                            // Criar o novo combo de resposta
+                            const answerCombo = document.createElement('div');
+                            answerCombo.classList.add('answer-combo');
+
+                            const questionText = document.createElement('p');
+                            questionText.classList.add('question-text');
+                            questionText.textContent = userQ;
+                            answerCombo.appendChild(questionText);
+
+                            const answerText = document.createElement('p');
+                            answerText.classList.add('answer-text');
+                            answerText.textContent = botA; // Resposta sem o link do WhatsApp
+                            answerCombo.appendChild(answerText);
+
+                            // Rodapé do combo com botões e WhatsApp
+                            const comboFooter = document.createElement('div');
+                            comboFooter.classList.add('combo-footer');
+
+                            const buttonGroup = document.createElement('div');
+                            buttonGroup.classList.add('button-group');
+
+                            const backToQuestionsButton = document.createElement('button');
+                            backToQuestionsButton.classList.add('back-to-questions-btn');
+                            backToQuestionsButton.textContent = 'Voltar para Perguntas';
+                            buttonGroup.appendChild(backToQuestionsButton);
+
+                            const closeChatButton = document.createElement('button');
+                            closeChatButton.classList.add('close-chat-btn-inline');
+                            closeChatButton.textContent = 'Voltar'; // Botão Voltar para fechar o chat
+                            buttonGroup.appendChild(closeChatButton);
+
+                            comboFooter.appendChild(buttonGroup); // Adicionar o grupo de botões ao rodapé do combo
+
+                            const whatsappLinkCombo = document.createElement('a');
+                            whatsappLinkCombo.href = `https://wa.me/${whatsappNumber}`;
+                            whatsappLinkCombo.target = '_blank';
+                            whatsappLinkCombo.classList.add('whatsapp-icon-link-combo');
+                            whatsappLinkCombo.innerHTML = '<i class="fab fa-whatsapp"></i>';
+                            comboFooter.appendChild(whatsappLinkCombo); // Adicionar o ícone do WhatsApp ao rodapé do combo
+
+
+                            answerCombo.appendChild(comboFooter); // Adicionar o rodapé ao combo de resposta
+
+                            // Adicionar listener para o botão Voltar para Perguntas dentro do combo
+                            backToQuestionsButton.addEventListener('click', function() {
+                                // Remover o combo de resposta
+                                chatBody.innerHTML = '';
+                                // Mostrar as opções de pergunta novamente
+                                chatOptions.classList.remove('hidden');
+                            });
+
+                            // Adicionar listener para o novo botão Voltar (fechar chat)
+                            closeChatButton.addEventListener('click', function() {
+                                 targetChatContainer.style.display = 'none';
+                                 targetChatContainer.classList.remove('active');
+                                 chatOptions.classList.remove('hidden'); // Garante que as opções não fiquem escondidas ao fechar
+                                 chatBody.innerHTML = ''; // Resetar chat
+                            });
+
+
+                            // Adicionar o combo de resposta ao corpo do chat
+                            chatBody.appendChild(answerCombo);
+                            chatBody.scrollTop = chatBody.scrollHeight; // Rolar para a nova resposta
                         });
                     });
 
@@ -775,67 +869,51 @@
                     if (targetChatContainer.style.display === 'none' || targetChatContainer.style.display === '') {
                         targetChatContainer.style.display = 'flex'; // Usar flex para layout interno
                          targetChatContainer.classList.add('active'); // Adicionar classe active
-                         chatBody.scrollTop = chatBody.scrollHeight; // Rolar para o topo ao abrir
+                         chatOptions.classList.remove('hidden'); // Garante que as opções estejam visíveis ao abrir
+                         chatBody.innerHTML = ''; // Limpar o corpo ao abrir um novo chat
                     } else {
                         targetChatContainer.style.display = 'none';
                          targetChatContainer.classList.remove('active'); // Remover classe active
+                         chatOptions.classList.remove('hidden'); // Garante que as opções não fiquem escondidas ao fechar
+                         chatBody.innerHTML = ''; // Resetar chat
                     }
 
                     // Adicionar listener para o botão fechar deste chat específico
                     chatCloseBtn.onclick = function() {
                          targetChatContainer.style.display = 'none';
                          targetChatContainer.classList.remove('active'); // Remover classe active
-                         chatBody.innerHTML = ''; // Resetar chat
-                    }
-
-                     // Adicionar listener para o botão Voltar deste chat específico
-                    chatBackButton.onclick = function() {
-                         targetChatContainer.style.display = 'none';
-                         targetChatContainer.classList.remove('active'); // Remover classe active
+                         chatOptions.classList.remove('hidden'); // Garante que as opções não fiquem escondidas ao fechar
                          chatBody.innerHTML = ''; // Resetar chat
                     }
                 }
             });
         });
 
-        // Função para adicionar mensagem a um corpo de chat específico
+        // Função para adicionar mensagem a um corpo de chat específico (mantida, mas não usada para as respostas do combo)
         function addMessageToSpecificChat(chatBodyElement, text, sender) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender);
-            messageElement.innerHTML = text; // Usar innerHTML para links (se houver outros links)
+            messageElement.innerHTML = text;
             chatBodyElement.appendChild(messageElement);
-            // Rolar para a mensagem mais recente
             chatBodyElement.scrollTop = chatBodyElement.scrollHeight;
         }
 
-        // Adicionar listeners para os botões fechar e voltar que já estão no HTML (para garantir que funcionem)
+        // Adicionar listeners para os botões fechar que já estão no HTML (para garantir que funcionem)
          document.querySelectorAll('.topic-chat-container .chat-close-btn').forEach(btn => {
              btn.addEventListener('click', function() {
                  const container = this.closest('.topic-chat-container');
                  if (container) {
                      container.style.display = 'none';
                      container.classList.remove('active');
+                      const chatOptions = container.querySelector('.chat-options');
                       const chatBody = container.querySelector('.chat-body');
-                      if(chatBody) {
-                           chatBody.innerHTML = ''; // Resetar chat
-                      }
+                      if(chatOptions) chatOptions.classList.remove('hidden'); // Garante que as opções não fiquem escondidas
+                      if(chatBody) chatBody.innerHTML = ''; // Resetar chat
                  }
              });
          });
 
-         document.querySelectorAll('.topic-chat-container .chat-back-button').forEach(btn => {
-             btn.addEventListener('click', function() {
-                 const container = this.closest('.topic-chat-container');
-                 if (container) {
-                     container.style.display = 'none';
-                     container.classList.remove('active');
-                      const chatBody = container.querySelector('.chat-body');
-                      if(chatBody) {
-                           chatBody.innerHTML = ''; // Resetar chat
-                      }
-                 }
-             });
-         });
+         // Os listeners para os botões Voltar no rodapé principal foram removidos no código anterior.
 
 
     </script>
