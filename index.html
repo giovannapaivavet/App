@@ -15,12 +15,12 @@
                         'patricia-sandstone': '#D0CFB8', // Sandstone (para fundo principal e elementos claros)
                         'patricia-vintage-seagrass': '#95B4AA', // Vintage Seagrass (para botões de ação e elementos de destaque)
                         'patricia-smoky-khaki': '#678863', // Smoky Khaki (para textos e elementos sóbrios)
-                        'patricia-soft-jade': '#C8DDD1', // Soft Jade (para fundos de chat e elementos secundários)
+                        'patricia-soft-jade': '#C8DDD1', // Soft Jade (para fundos de chat e elementos secundários) - Mantido, pois é mais cinza/claro
                         'patricia-text': '#444', // Cor de texto principal (um cinza escuro para legibilidade)
                         'patricia-heading': '#000', // Cor para títulos principais (PRETO)
                         'patricia-subheading': '#444', // Cor para subtítulos/descrições (MAIS ESCURA)
-                        // Cores para ícones flutuantes (mantidas as cores associadas)
-                         'whatsapp-float': '#25D366', // Verde WhatsApp (mantido)
+                        // Cores para ícones flutuantes (Instagram mantido, WhatsApp de volta para verde)
+                         'whatsapp-float': '#25D366', // Verde para WhatsApp flutuante
                          'instagram-float': '#A66C8F', // Tom de rosa/roxo para Instagram (mantido)
                     },
                     fontFamily: {
@@ -31,7 +31,7 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;660;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Estilos personalizados adicionais */
@@ -56,7 +56,10 @@
             --patricia-smoky-khaki: #678863;
             --patricia-soft-jade: #C8DDD1;
             --patricia-text: #444; /* Cor de texto mais escura */
-        }
+            /* Variáveis para os tons de verde do WhatsApp (revertido) */
+            --whatsapp-green: #25D366; /* Verde padrão do WhatsApp */
+            --whatsapp-green-darker: #128751; /* Verde mais escuro para hover */
+         }
 
 
         .linktree-container {
@@ -145,12 +148,12 @@
              background: linear-gradient(to right, #5a7a5ki, #4d6c4a); /* Gradiente mais escuro */
          }
 
-         /* Estilo específico para o botão de WhatsApp (mantido) */
+         /* Estilo específico para o botão de WhatsApp (VERDE NOVAMENTE) */
         .btn-option.whatsapp-button {
-             background: linear-gradient(to right, #25D366, #128751); /* Mantido */
+             background: linear-gradient(to right, var(--whatsapp-green), var(--whatsapp-green-darker)); /* Gradiente Verde para WhatsApp */
         }
          .btn-option.whatsapp-button:hover {
-             background: linear-gradient(to right, #128751, #0e6b40); /* Mantido */
+             background: linear-gradient(to right, var(--whatsapp-green-darker), #0e6b40); /* Gradiente Verde mais escuro */
          }
 
          /* Estilo específico para o botão de Instagram (mantido) */
@@ -203,8 +206,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 55px; /* Tamanho do círculo aumentado */
-            height: 55px; /* Tamanho do círculo aumentado */
+            width: 60px; /* Tamanho do círculo aumentado */
+            height: 60px; /* Tamanho do círculo aumentado */
             border-radius: 50%; /* Forma de círculo */
             color: white;
             font-size: 2rem; /* Tamanho do ícone aumentado */
@@ -217,7 +220,7 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
         }
         .whatsapp-float-linktree {
-            background-color: #25D366; /* Verde WhatsApp */
+            background-color: var(--whatsapp-green); /* Verde para WhatsApp flutuante */
             color: white; /* Cor do ícone branca */
         }
         .instagram-float-linktree {
@@ -272,7 +275,16 @@
             /* max-height: 200px; /* Removido para permitir que o combo de resposta se expanda */
              display: flex; /* Para alinhar mensagens */
              flex-direction: column;
+             overflow-y: auto; /* Manter scroll para a lista de perguntas */
+             max-height: 200px; /* Manter altura máxima para a lista de perguntas */
         }
+
+         /* Estilo específico para o corpo do chat quando o combo de resposta está ativo */
+         .topic-chat-container .chat-body.combo-active {
+             overflow-y: visible; /* Remover scroll quando o combo está ativo */
+             max-height: none; /* Remover altura máxima quando o combo está ativo */
+         }
+
 
         .topic-chat-container .message {
             margin-bottom: 10px;
@@ -328,7 +340,7 @@
 
         /* Estilo para o combo de resposta */
         .answer-combo {
-            background-color: var(--patricia-soft-jade); /* Cor de fundo para o combo de resposta */
+            background-color: var(--patricia-soft-jade); /* Cor de fundo para o combo de resposta - Mantido */
             border: 1px solid #d0d0d0;
             border-radius: 8px;
             padding: 15px;
@@ -394,19 +406,19 @@
         }
 
         .answer-combo .whatsapp-icon-link-combo {
-             color: #25D366; /* Cor do ícone WhatsApp */
+             color: var(--whatsapp-green); /* Cor Verde para o ícone WhatsApp no combo */
              font-size: 2rem; /* Tamanho do ícone */
              transition: color 0.3s ease;
         }
 
          .answer-combo .whatsapp-icon-link-combo:hover {
-             color: #128751; /* Cor mais escura no hover */
+             color: var(--whatsapp-green-darker); /* Cor Verde mais escura no hover */
          }
 
 
         .topic-chat-container .whatsapp-link {
              display: inline-block;
-            background-color: #25D366; /* WhatsApp green */
+            background-color: var(--whatsapp-green); /* Verde para o link WhatsApp */
             color: white;
             padding: 8px 12px;
             border-radius: 5px;
@@ -418,7 +430,7 @@
         }
 
          .topic-chat-container .whatsapp-link:hover {
-             background-color: #128751; /* Darker WhatsApp green */
+             background-color: var(--whatsapp-green-darker); /* Verde mais escuro */
          }
 
          /* Remove o botão Voltar do rodapé do chat principal */
@@ -471,9 +483,9 @@
                  right: 15px;
              }
              .floating-icon-linktree {
-                 width: 50px;
-                 height: 50px;
-                 font-size: 1.8rem;
+                 width: 50px; /* Ajustado para mobile */
+                 height: 50px; /* Ajustado para mobile */
+                 font-size: 1.8rem; /* Ajustado para mobile */
                  margin-bottom: 10px;
              }
              .topic-chat-container {
@@ -834,10 +846,6 @@
                             buttonGroup.classList.add('button-group');
 
                             // Removido o botão "Voltar para Perguntas"
-                            // const backToQuestionsButton = document.createElement('button');
-                            // backToQuestionsButton.classList.add('back-to-questions-btn');
-                            // backToQuestionsButton.textContent = 'Voltar para Perguntas';
-                            // buttonGroup.appendChild(backToQuestionsButton);
 
                             const closeChatButton = document.createElement('button');
                             closeChatButton.classList.add('close-chat-btn-inline');
@@ -856,25 +864,18 @@
 
                             answerCombo.appendChild(comboFooter); // Adicionar o rodapé ao combo de resposta
 
-                            // Removido o listener para o botão "Voltar para Perguntas"
-                            // backToQuestionsButton.addEventListener('click', function() {
-                            //     // Remover o combo de resposta
-                            //     chatBody.innerHTML = '';
-                            //     // Mostrar as opções de pergunta novamente
-                            //     chatOptions.classList.remove('hidden');
-                            // });
-
                             // Adicionar listener para o novo botão Voltar (fechar chat)
                             closeChatButton.addEventListener('click', function() {
                                  targetChatContainer.style.display = 'none';
                                  targetChatContainer.classList.remove('active');
                                  chatOptions.classList.remove('hidden'); // Garante que as opções não fiquem escondidas ao fechar
                                  chatBody.innerHTML = ''; // Resetar chat
+                                 chatBody.classList.remove('combo-active'); // Remover classe para restaurar scroll
                             });
-
 
                             // Adicionar o combo de resposta ao corpo do chat
                             chatBody.appendChild(answerCombo);
+                            chatBody.classList.add('combo-active'); // Adicionar classe para remover scroll
                             chatBody.scrollTop = chatBody.scrollHeight; // Rolar para a nova resposta
                         });
                     });
@@ -885,11 +886,13 @@
                          targetChatContainer.classList.add('active'); // Adicionar classe active
                          chatOptions.classList.remove('hidden'); // Garante que as opções estejam visíveis ao abrir
                          chatBody.innerHTML = ''; // Limpar o corpo ao abrir um novo chat
+                         chatBody.classList.remove('combo-active'); // Remover classe ao abrir para garantir scroll inicial
                     } else {
                         targetChatContainer.style.display = 'none';
                          targetChatContainer.classList.remove('active'); // Remover classe active
                          chatOptions.classList.remove('hidden'); // Garante que as opções não fiquem escondidas ao fechar
                          chatBody.innerHTML = ''; // Resetar chat
+                         chatBody.classList.remove('combo-active'); // Remover classe ao fechar
                     }
 
                     // Adicionar listener para o botão fechar deste chat específico
@@ -898,6 +901,7 @@
                          targetChatContainer.classList.remove('active'); // Remover classe active
                          chatOptions.classList.remove('hidden'); // Garante que as opções não fiquem escondidas ao fechar
                          chatBody.innerHTML = ''; // Resetar chat
+                         chatBody.classList.remove('combo-active'); // Remover classe ao fechar
                     }
                 }
             });
@@ -922,13 +926,13 @@
                       const chatOptions = container.querySelector('.chat-options');
                       const chatBody = container.querySelector('.chat-body');
                       if(chatOptions) chatOptions.classList.remove('hidden'); // Garante que as opções não fiquem escondidas
-                      if(chatBody) chatBody.innerHTML = ''; // Resetar chat
+                      if(chatBody) {
+                          chatBody.innerHTML = ''; // Resetar chat
+                          chatBody.classList.remove('combo-active'); // Remover classe
+                      }
                  }
              });
          });
-
-         // Os listeners para os botões Voltar no rodapé principal foram removidos no código anterior.
-
 
     </script>
 
