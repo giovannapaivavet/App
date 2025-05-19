@@ -31,7 +31,7 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;660;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Estilos personalizados adicionais */
@@ -42,10 +42,11 @@
             background: linear-gradient(to bottom right, var(--patricia-sandstone), #c0bfa8); /* Gradiente suave no fundo com nova cor */
             display: flex;
             flex-direction: column; /* Para alinhar o rodapé ao final */
-            justify-content: center;
-            align-items: flex-start; /* Alinhar ao topo para melhor visualização em telas maiores */
+            justify-content: flex-start; /* Alinhar ao topo */
+            align-items: center; /* Centralizar conteúdo horizontalmente */
             min-height: 100vh;
             padding: 40px 20px; /* Padding maior no body */
+            box-sizing: border-box; /* Inclui padding na largura */
         }
 
         /* Usando variáveis CSS para as novas cores */
@@ -68,6 +69,9 @@
             width: 100%;
             border: 1px solid #e0e0e0; /* Borda sutil */
             margin-bottom: 40px; /* Espaço antes do rodapé */
+             /* Centraliza o container na tela */
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .profile-img {
@@ -264,9 +268,8 @@
 
         .topic-chat-container .chat-body {
             flex-grow: 1;
-            padding-right: 10px; /* Espaço para a barra de scroll */
-            overflow-y: auto; /* Scroll para as mensagens */
-            max-height: 200px; /* Altura máxima para o scroll */
+            /* Removido padding-right e overflow-y para evitar scrollbar interna */
+            /* max-height: 200px; /* Removido para permitir que o combo de resposta se expanda */
              display: flex; /* Para alinhar mensagens */
              flex-direction: column;
         }
@@ -335,6 +338,7 @@
             display: flex; /* Usar flexbox para alinhar itens */
             flex-direction: column; /* Itens empilhados */
             gap: 10px; /* Espaço entre os itens do combo */
+            /* Removido max-height para permitir que o combo se expanda */
         }
 
         .answer-combo .question-text {
@@ -344,6 +348,7 @@
 
         .answer-combo .answer-text {
             color: var(--patricia-text); /* Cor da resposta no combo */
+            /* Removido overflow-y e max-height */
         }
 
         .answer-combo .combo-footer {
@@ -356,30 +361,33 @@
         }
 
         .answer-combo .button-group {
-            display: flex; /* Para colocar os botões lado a lado */
-            gap: 10px; /* Espaço entre os botões */
-            flex-grow: 1; /* Para ocupar o espaço disponível */
-            margin-right: 10px; /* Espaço entre os botões e o WhatsApp */
-             flex-wrap: wrap; /* Permite quebra de linha em telas menores */
+            display: flex; /* Para colocar o botão Voltar à esquerda */
+            gap: 10px; /* Espaço entre os botões (embora só tenha um agora) */
+            flex-grow: 0; /* Não ocupa o espaço disponível */
+            margin-right: auto; /* Empurra para a esquerda */
+            align-items: center; /* Centraliza verticalmente com o ícone */
         }
 
-        .answer-combo .back-to-questions-btn,
+        .answer-combo .back-to-questions-btn {
+            display: none; /* Esconde o botão Voltar para Perguntas */
+        }
+
         .answer-combo .close-chat-btn-inline {
             background-color: #ffffff; /* Fundo branco */
             color: var(--patricia-text); /* Cor do texto */
-            padding: 8px 12px;
+            padding: 5px 10px; /* Padding menor para botão pequeno */
             border-radius: 5px;
             border: 1px solid #ccc; /* Borda sutil para botões brancos */
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.8rem; /* Fonte menor para botão pequeno */
             font-weight: 600;
             transition: background-color 0.3s ease, border-color 0.3s ease;
             text-align: center;
-            flex-grow: 1; /* Para ocupar o espaço disponível */
-             min-width: 100px; /* Largura mínima para os botões */
+            width: auto; /* Largura automática baseada no conteúdo */
+            flex-grow: 0; /* Não cresce */
+            min-width: unset; /* Remove largura mínima */
         }
 
-        .answer-combo .back-to-questions-btn:hover,
         .answer-combo .close-chat-btn-inline:hover {
              background-color: #f0f0f0; /* Cinza muito claro no hover */
              border-color: #b3b3b3; /* Borda mais escura no hover */
@@ -473,28 +481,33 @@
                  font-size: 0.9rem;
              }
              .topic-chat-container .chat-body {
-                 max-height: 150px; /* Ajuste para telas menores */
+                 /* max-height: 150px; /* Removido ajuste para telas menores */
              }
               .topic-chat-container .option-button-small {
                   font-size: 0.9rem;
                   padding: 8px 10px;
               }
               .answer-combo .combo-footer {
-                  flex-direction: column; /* Empilha em telas menores */
-                  align-items: flex-start;
+                  flex-direction: row; /* Mantém na mesma linha em telas menores */
+                  align-items: center;
+                  justify-content: space-between; /* Espaço entre os elementos */
               }
                .answer-combo .button-group {
-                   width: 100%; /* Ocupa largura total em telas menores */
-                   margin-right: 0;
-                   margin-bottom: 10px;
+                   width: auto; /* Largura automática */
+                   margin-right: auto; /* Empurra para a esquerda */
+                   margin-bottom: 0; /* Remove margem inferior */
+                   flex-wrap: nowrap; /* Evita quebra de linha para o botão único */
                }
-               .answer-combo .back-to-questions-btn,
+               .answer-combo .back-to-questions-btn {
+                   display: none; /* Continua escondido */
+               }
                .answer-combo .close-chat-btn-inline {
-                   flex-grow: 0; /* Desativa o flex-grow em telas menores */
-                   width: 100%; /* Ocupa largura total */
+                   width: auto; /* Largura automática */
+                   font-size: 0.8rem; /* Mantém fonte pequena */
+                   padding: 5px 10px; /* Mantém padding pequeno */
                }
                .answer-combo .whatsapp-icon-link-combo {
-                   align-self: center; /* Centraliza o ícone em telas menores */
+                   align-self: center; /* Centraliza o ícone */
                }
         }
     </style>
@@ -820,10 +833,11 @@
                             const buttonGroup = document.createElement('div');
                             buttonGroup.classList.add('button-group');
 
-                            const backToQuestionsButton = document.createElement('button');
-                            backToQuestionsButton.classList.add('back-to-questions-btn');
-                            backToQuestionsButton.textContent = 'Voltar para Perguntas';
-                            buttonGroup.appendChild(backToQuestionsButton);
+                            // Removido o botão "Voltar para Perguntas"
+                            // const backToQuestionsButton = document.createElement('button');
+                            // backToQuestionsButton.classList.add('back-to-questions-btn');
+                            // backToQuestionsButton.textContent = 'Voltar para Perguntas';
+                            // buttonGroup.appendChild(backToQuestionsButton);
 
                             const closeChatButton = document.createElement('button');
                             closeChatButton.classList.add('close-chat-btn-inline');
@@ -842,13 +856,13 @@
 
                             answerCombo.appendChild(comboFooter); // Adicionar o rodapé ao combo de resposta
 
-                            // Adicionar listener para o botão Voltar para Perguntas dentro do combo
-                            backToQuestionsButton.addEventListener('click', function() {
-                                // Remover o combo de resposta
-                                chatBody.innerHTML = '';
-                                // Mostrar as opções de pergunta novamente
-                                chatOptions.classList.remove('hidden');
-                            });
+                            // Removido o listener para o botão "Voltar para Perguntas"
+                            // backToQuestionsButton.addEventListener('click', function() {
+                            //     // Remover o combo de resposta
+                            //     chatBody.innerHTML = '';
+                            //     // Mostrar as opções de pergunta novamente
+                            //     chatOptions.classList.remove('hidden');
+                            // });
 
                             // Adicionar listener para o novo botão Voltar (fechar chat)
                             closeChatButton.addEventListener('click', function() {
