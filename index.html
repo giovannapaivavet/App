@@ -22,6 +22,7 @@
                         // Cores para ícones flutuantes (Instagram mantido, WhatsApp de volta para verde)
                          'whatsapp-float': '#25D366', // Verde para WhatsApp flutuante
                          'instagram-float': '#A66C8F', // Tom de rosa/roxo para Instagram (mantido)
+                         'email-float': '#777', // Cor para ícone de Email flutuante (cinza)
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'], // Fonte principal Inter
@@ -206,12 +207,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 70px; /* Tamanho do círculo AUMENTADO */
-            height: 70px; /* Tamanho do círculo AUMENTADO */
+            width: 75px; /* Tamanho do círculo AUMENTADO */
+            height: 75px; /* Tamanho do círculo AUMENTADO */
             border-radius: 50%; /* Forma de círculo */
             color: white;
-            font-size: 3rem; /* Tamanho do ícone AUMENTADO */
-            margin-bottom: 18px; /* Espaço entre os ícones AUMENTADO */
+            font-size: 3.5rem; /* Tamanho do ícone AUMENTADO */
+            margin-bottom: 20px; /* Espaço entre os ícones AUMENTADO */
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
@@ -227,6 +228,11 @@
             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); /* Gradiente Instagram */
              color: white; /* Cor do ícone branca */
         }
+        .email-float-linktree {
+            background-color: var(--email-float); /* Cor cinza para Email flutuante */
+            color: white; /* Cor do ícone branca */
+        }
+
 
         /* Estilos para o Chat por Tópico Expansível */
         .topic-chat-container {
@@ -483,9 +489,9 @@
                  right: 15px;
              }
              .floating-icon-linktree {
-                 width: 60px; /* Ajustado para mobile */
-                 height: 60px; /* Ajustado para mobile */
-                 font-size: 2.5rem; /* Ajustado para mobile */
+                 width: 65px; /* Ajustado para mobile */
+                 height: 65px; /* Ajustado para mobile */
+                 font-size: 3rem; /* Ajustado para mobile */
                  margin-bottom: 10px;
              }
              .topic-chat-container {
@@ -647,9 +653,9 @@
                  </div>
 
             <div class="writer-section">
-                <h3>Sobre o Livro: GIRASSÓIS DA VIDA</h3>
+                <h3>Sobre o livro: Girassóis da Vida</h3>
                 <p>
-                    Girassóis da Vida é um convite à reflexão sobre a existência, onde cada página revela a beleza e os desafios da jornada humana. Inspirado pela simbologia do girassol, o livro nos convida a buscar a luz, mesmo em tempos sombrios, e a valorizar cada instante com presença e gratidão. Em meio a histórias de amor, superação e descobertas, somos lembrados de que viver é um ato profundo de conexão, reinvenção e propósito — uma celebração da vida em sua plenitude, física e espiritual.
+                    Um convite sensível à reflexão sobre a vida, o amor e a superação. Inspirado na simbologia do girassol, o livro nos encoraja a buscar a luz mesmo nos momentos difíceis, celebrando a existência com gratidão, propósito e conexão entre o físico e o espiritual.
                 </p>
                  <button class="btn-option writer-button" data-topic="girassois-vida"><i class="fas fa-book"></i> Sobre o Livro</button>
                  <div class="topic-chat-container" id="chat-girassois-vida">
@@ -686,6 +692,9 @@
         </a>
         <a href="https://www.instagram.com/patricia.paiva.391/" target="_blank" class="floating-icon instagram-float-linktree">
             <i class="fab fa-instagram"></i>
+        </a>
+        <a href="mailto:seuemail@example.com" class="floating-icon email-float-linktree">
+            <i class="fas fa-envelope"></i>
         </a>
     </div>
 
@@ -750,7 +759,7 @@
                  ]
             },
             "girassois-vida": {
-                 title: "Sobre o Livro", // Título reduzido
+                 title: "Sobre o livro: Girassóis da Vida", // Título atualizado
                  questions: [
                      { q: "Qual a inspiração por trás do livro 'Girassóis da Vida'?", a: "O livro é inspirado na simbologia do girassol, que busca a luz e representa resiliência, positividade e a capacidade de encontrar beleza mesmo em tempos desafiadores." },
                      { q: "Qual o tema central abordado no livro?", a: "O livro convida à reflexão sobre a existência, a jornada humana, o amor, a superação, a busca por propósito e a conexão entre o físico e o espiritual." },
@@ -845,8 +854,7 @@
                             const buttonGroup = document.createElement('div');
                             buttonGroup.classList.add('button-group');
 
-                            // Removido o botão "Voltar para Perguntas"
-
+                            // Botão Voltar que agora fecha o chat
                             const closeChatButton = document.createElement('button');
                             closeChatButton.classList.add('close-chat-btn-inline');
                             closeChatButton.textContent = 'Voltar'; // Botão Voltar para fechar o chat
@@ -866,7 +874,7 @@
 
                             // Adicionar listener para o novo botão Voltar (fechar chat)
                             closeChatButton.addEventListener('click', function() {
-                                 targetChatContainer.style.display = 'none';
+                                 targetChatContainer.style.display = 'none'; // Esconde o container do chat
                                  targetChatContainer.classList.remove('active');
                                  chatOptions.classList.remove('hidden'); // Garante que as opções não fiquem escondidas ao fechar
                                  chatBody.innerHTML = ''; // Resetar chat
