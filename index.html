@@ -1,120 +1,1026 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Controle de Gastos</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background: #f7f7f7; }
-    h1 { color: #333; }
-    form, .resumo, .gastos-lista, .acoes { background: #fff; padding: 20px; border-radius: 6px; margin-bottom: 20px; box-shadow: 0 2px 6px #0001;}
-    input, button { padding: 8px; margin: 4px 0; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 8px; border-bottom: 1px solid #eee; text-align: left; }
-    .remover { color: #fff; background: #d33; border: none; border-radius: 3px; cursor: pointer; }
-    .remover:hover { background: #b22; }
-    .acoes button { margin-right: 12px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Controle Financeiro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6; /* bg-gray-100 */
+        }
+        /* Estilo para o spinner de carregamento */
+        .loader {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #2dd4bf; /* Teal-500 */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Estilos para o gráfico de barras para evitar corte de labels */
+        canvas {
+            max-width: 100%;
+            height: auto; /* Garante que o canvas seja responsivo */
+        }
+    </style>
 </head>
-<body>
-  <h1>Controle de Gastos</h1>
-  <form id="form-gasto">
-    <label>Descrição: <input type="text" id="descricao" required></label>
-    <label>Valor (R$): <input type="number" id="valor" step="0.01" min="0" required></label>
-    <button type="submit">Adicionar Gasto</button>
-  </form>
+<body class="min-h-screen bg-gray-100">
 
-  <div class="acoes">
-    <button onclick="exportarCSV()">Exportar CSV</button>
-    <button onclick="limparGastos()">Limpar Todos</button>
-  </div>
+    <div id="loading-screen" class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <div class="loader mb-4"></div>
+        <p class="text-gray-700 text-xl">A carregar aplicação...</p>
+    </div>
 
-  <div class="gastos-lista">
-    <h2>Gastos</h2>
-    <table id="tabela-gastos">
-      <thead>
-        <tr>
-          <th>Descrição</th>
-          <th>Valor (R$)</th>
-          <th>Ação</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Gastos serão inseridos aqui -->
-      </tbody>
-    </table>
-  </div>
+    <div id="auth-view" class="hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-green-500 to-teal-500 p-4">
+        <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md">
+            <h2 id="auth-title" class="text-3xl font-bold text-center text-gray-800 mb-8">Aceder ao Controlo Financeiro</h2>
+            <form id="auth-form" class="space-y-6">
+                <div>
+                    <label for="auth-email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="auth-email" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="o_seu@email.com" />
+                </div>
+                <div>
+                    <label for="auth-password" class="block text-sm font-medium text-gray-700">Palavra-passe</label>
+                    <input type="password" id="auth-password" required class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="********" />
+                </div>
+                <button type="submit" id="auth-submit-btn" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50">
+                    Entrar
+                </button>
+            </form>
+            <p class="mt-6 text-center text-sm text-gray-600">
+                Não tem uma conta?
+                <button id="toggle-auth-mode-btn" class="font-medium text-teal-600 hover:text-teal-500">
+                    Registe-se
+                </button>
+            </p>
+            <p id="user-id-display" class="hidden mt-4 text-xs text-center text-gray-500 break-all"></p>
+        </div>
+    </div>
 
-  <div class="resumo">
-    <h2>Total de Gastos: R$ <span id="total">0.00</span></h2>
-  </div>
+    <div id="dashboard-view" class="hidden min-h-screen bg-gray-100 p-4 md:p-8">
+        <header class="mb-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center py-6 bg-white shadow-md rounded-lg">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">O Meu Controlo Financeiro</h1>
+                    <p id="user-email-display" class="text-sm text-gray-600"></p>
+                </div>
+                <div class="flex items-center space-x-3 mt-4 sm:mt-0">
+                    <button id="add-transaction-btn" class="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                        <span>Adicionar Transação</span>
+                    </button>
+                    <button id="logout-btn" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
+                        <span>Sair</span>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-  <script>
-    let gastos = JSON.parse(localStorage.getItem('gastos')) || [];
-    const form = document.getElementById('form-gasto');
-    const tabela = document.getElementById('tabela-gastos').querySelector('tbody');
-    const totalSpan = document.getElementById('total');
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <section class="lg:col-span-1 space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-2">Saldo Atual</h2>
+                    <p id="balance-display" class="text-3xl font-bold"></p>
+                    <div class="mt-4 space-y-1 text-sm">
+                        <p class="text-green-500">Total de Entradas: <span id="total-entradas"></span></p>
+                        <p class="text-red-500">Total de Saídas: <span id="total-saidas"></span></p>
+                    </div>
+                </div>
 
-    function atualizarTabela() {
-      tabela.innerHTML = '';
-      let total = 0;
-      gastos.forEach((gasto, i) => {
-        total += gasto.valor;
-        const linha = document.createElement('tr');
-        linha.innerHTML = `
-          <td>${gasto.descricao}</td>
-          <td>R$ ${gasto.valor.toFixed(2)}</td>
-          <td><button class="remover" onclick="removerGasto(${i})">Remover</button></td>
-        `;
-        tabela.appendChild(linha);
-      });
-      totalSpan.textContent = total.toFixed(2);
-      localStorage.setItem('gastos', JSON.stringify(gastos));
-    }
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Entradas vs Saídas</h2>
+                    <div style="width: 100%; height: 250px;">
+                        <canvas id="income-expense-chart"></canvas>
+                    </div>
+                </div>
 
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      const descricao = document.getElementById('descricao').value.trim();
-      const valor = parseFloat(document.getElementById('valor').value);
-      if (descricao && !isNaN(valor) && valor >= 0) {
-        gastos.push({ descricao, valor });
-        form.reset();
-        atualizarTabela();
-      }
-    });
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Transações por Status (Geral)</h2>
+                    <div style="width: 100%; height: 250px;">
+                        <canvas id="status-chart"></canvas>
+                    </div>
+                </div>
 
-    window.removerGasto = function(index) {
-      gastos.splice(index, 1);
-      atualizarTabela();
-    };
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Gastos por Subcategoria (Geral)</h2>
+                    <div style="width: 100%; height: 300px;">
+                        <canvas id="expense-bar-chart"></canvas>
+                    </div>
+                </div>
 
-    window.limparGastos = function() {
-      if (confirm('Tem certeza que deseja apagar todos os gastos?')) {
-        gastos = [];
-        atualizarTabela();
-      }
-    };
+            </section>
 
-    window.exportarCSV = function() {
-      if (gastos.length === 0) {
-        alert('Não há gastos para exportar!');
-        return;
-      }
-      let csv = 'Descrição,Valor (R$)\n';
-      gastos.forEach(g => {
-        csv += `"${g.descricao.replace(/"/g, '""')}",${g.valor.toFixed(2)}\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'gastos.csv';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    };
+            <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                <h2 class="text-xl font-semibold text-gray-700 mb-6">Histórico de Transações por Mês/Ano</h2>
+                <div id="transactions-history-container">
+                    <div id="no-transactions-message" class="hidden text-center py-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="mx-auto h-12 w-12 text-gray-400"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 00-.12-1.03l-2.268-9.64a3.375 3.375 0 00-3.285-2.602H7.923a3.375 3.375 0 00-3.285 2.602l-2.268 9.64a4.5 4.5 0 00-.12 1.03v.228m19.5 0a3 3 0 01-3 3H5.25a3 3 0 01-3-3m19.5 0a3 3 0 00-3-3H5.25a3 3 0 00-3 3m16.5 0h.008v.008h-.008v-.008zm-3 0h.008v.008h-.008v-.008z" /></svg>
+                        <h3 class="mt-2 text-lg font-medium text-gray-900">Nenhuma transação registada</h3>
+                        <p class="mt-1 text-sm text-gray-500">Comece por adicionar a sua primeira entrada ou saída.</p>
+                        <button id="add-first-transaction-btn" type="button" class="mt-6 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            Adicionar Transação
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
 
-    atualizarTabela();
-  </script>
+    <div id="transaction-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="transaction-modal-title" class="text-xl font-semibold text-gray-800">Adicionar Nova Transação</h3>
+                <button id="close-transaction-modal-btn" class="text-gray-500 hover:text-gray-700 transition-colors p-1 rounded-full hover:bg-gray-200" aria-label="Fechar modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <form id="transaction-form" class="space-y-4">
+                <div>
+                    <label for="transaction-description" class="block text-sm font-medium text-gray-700">Descrição</label>
+                    <input type="text" id="transaction-description" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500" placeholder="Ex: Salário, Aluguel"/>
+                </div>
+                <div>
+                    <label for="transaction-amount" class="block text-sm font-medium text-gray-700">Valor (R$)</label>
+                    <input type="number" id="transaction-amount" required step="0.01" min="0.01" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500" placeholder="Ex: 1500.00"/>
+                </div>
+                <div>
+                    <label for="transaction-category" class="block text-sm font-medium text-gray-700">Tipo de Transação</label>
+                    <select id="transaction-category" required class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
+                        <option value="saida">Saída</option>
+                        <option value="entrada">Entrada</option>
+                    </select>
+                </div>
+                <div id="subcategory-field" class="hidden">
+                    <label for="transaction-subcategory" class="block text-sm font-medium text-gray-700">Subcategoria (Saída)</label>
+                    <select id="transaction-subcategory" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
+                        <option value="">Selecione uma subcategoria</option>
+                        <option value="alimentacao">Alimentação</option>
+                        <option value="aluguel">Aluguel</option>
+                        <option value="cartao">Cartão</option>
+                        <option value="casa">Casa</option>
+                        <option value="estudo">Estudo</option>
+                        <option value="extras">Extras</option>
+                        <option value="funcionarios">Funcionários</option>
+                        <option value="impostos">Impostos</option>
+                        <option value="mesada">Mesada</option>
+                        <option value="pessoal">Pessoal</option>
+                        <option value="saude">Saúde</option>
+                        <option value="prest_cef">Prest. CEF</option>
+                        <option value="carro">Carro</option>
+                    </select>
+                </div>
+                <div id="dueDate-field" class="hidden">
+                    <label for="transaction-dueDate" class="block text-sm font-medium text-gray-700">Data de Vencimento</label>
+                    <input type="date" id="transaction-dueDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500"/>
+                </div>
+                <div id="status-field" class="hidden">
+                    <label for="transaction-status" class="block text-sm font-medium text-gray-700">Status</label>
+                    <select id="transaction-status" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500">
+                        <option value="Em Aberto">Em Aberto</option>
+                        <option value="Pago">Pago</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="transaction-date" class="block text-sm font-medium text-gray-700">Data da Transação</label>
+                    <input type="date" id="transaction-date" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500"/>
+                </div>
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button type="button" id="cancel-transaction-btn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md border">Cancelar</button>
+                    <button type="submit" id="save-transaction-btn" class="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-md shadow-sm disabled:opacity-50 flex items-center">
+                        Adicionar Transação
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Confirmar Exclusão</h3>
+                <button id="close-delete-modal-btn" class="text-gray-500 hover:text-gray-700 transition-colors p-1 rounded-full hover:bg-gray-200" aria-label="Fechar modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <p class="text-gray-700 mb-6">A funcionalidade de exclusão direta de transações via Google Apps Script ainda não está implementada. Por favor, exclua manualmente na planilha.</p>
+            <div class="flex justify-end space-x-3">
+                <button type="button" id="confirm-delete-btn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md border">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-container" class="fixed top-5 right-5 z-[100]"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Variáveis globais para o estado da aplicação
+        let currentUser = null;
+        let currentUserId = null;
+        let transactions = [];
+        let isSubmitting = false; // Para desabilitar botões durante submissão
+        let editingTransaction = null; // Armazena a transação sendo editada
+
+        // Configuração do Firebase (para autenticação)
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Inicializa o Firebase
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // URL BASE DO SEU GOOGLE APPS SCRIPT WEB APP
+        // **ATUALIZE ESTA URL COM A URL DE IMPLANTAÇÃO DO SEU SCRIPT DO GOOGLE APPS SCRIPT**
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/SEU_ID_DA_IMPLANTACAO_DO_APPS_SCRIPT/exec'; // ATUALIZE AQUI!
+
+        // Mapeamento de categorias e cores
+        const transactionCategories = [
+            { value: "saida", label: "Saída", color: "#FF6384" },
+            { value: "entrada", label: "Entrada", color: "#4BC0C0" },
+        ];
+
+        const expenseSubcategories = [
+            { value: "alimentacao", label: "Alimentação" }, { value: "aluguel", label: "Aluguel" },
+            { value: "cartao", label: "Cartão" }, { value: "casa", label: "Casa" },
+            { value: "estudo", label: "Estudo" }, { value: "extras", label: "Extras" },
+            { value: "funcionarios", label: "Funcionários" }, { value: "impostos", label: "Impostos" },
+            { value: "mesada", label: "Mesada" }, { value: "pessoal", label: "Pessoal" },
+            { value: "saude", label: "Saúde" }, { value: "prest_cef", label: "Prest. CEF" },
+            { value: "carro", label: "Carro" },
+        ];
+
+        const STATUS_COLORS = {
+            'Pago': '#34D399',      // Verde
+            'A Vencer': '#3B82F6',  // Azul
+            'Atrasado': '#EF4444'   // Vermelho
+        };
+
+        // --- Funções Auxiliares de UI ---
+
+        function showElement(id) { document.getElementById(id).classList.remove('hidden'); }
+        function hideElement(id) { document.getElementById(id).classList.add('hidden'); }
+        function disableButton(id) { document.getElementById(id).disabled = true; document.getElementById(id).classList.add('opacity-50'); }
+        function enableButton(id) { document.getElementById(id).disabled = false; document.getElementById(id).classList.remove('opacity-50'); }
+
+        function showNotification(message, type) {
+            const container = document.getElementById('notification-container');
+            const notificationDiv = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            notificationDiv.className = `p-4 rounded-md shadow-lg text-white flex items-center mb-2 ${bgColor}`;
+            notificationDiv.innerHTML = `
+                <span>${message}</span>
+                <button class="ml-4 text-xl font-bold">&times;</button>
+            `;
+            notificationDiv.querySelector('button').onclick = () => container.removeChild(notificationDiv);
+            container.appendChild(notificationDiv);
+            setTimeout(() => {
+                if (container.contains(notificationDiv)) {
+                    container.removeChild(notificationDiv);
+                }
+            }, 3000);
+        }
+
+        function openModal(modalId, title = '') {
+            const modal = document.getElementById(modalId);
+            if (title && document.getElementById(`${modalId}-title`)) {
+                document.getElementById(`${modalId}-title`).textContent = title;
+            }
+            showElement(modalId);
+        }
+
+        function closeModal(modalId) {
+            hideElement(modalId);
+        }
+
+        // --- Lógica de Autenticação ---
+
+        async function handleAuth(type, email, password) {
+            isSubmitting = true;
+            disableButton('auth-submit-btn');
+            try {
+                if (type === 'login') {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    showNotification('Login realizado com sucesso!', 'success');
+                } else {
+                    await auth.createUserWithEmailAndPassword(email, password);
+                    showNotification('Utilizador registado com sucesso!', 'success');
+                }
+            } catch (error) {
+                showNotification(error.message, 'error');
+            } finally {
+                isSubmitting = false;
+                enableButton('auth-submit-btn');
+            }
+        }
+
+        async function handleLogout() {
+            isSubmitting = true;
+            disableButton('logout-btn');
+            try {
+                await auth.signOut();
+                showNotification('Logout realizado com sucesso!', 'success');
+            } catch (error) {
+                showNotification(error.message, 'error');
+            } finally {
+                isSubmitting = false;
+                enableButton('logout-btn');
+            }
+        }
+
+        // --- Lógica de Dados (Google Apps Script) ---
+
+        // Determina se a transação está 'A Vencer', 'Atrasado' ou 'Pago'
+        function getCalculatedStatus(transaction) {
+            if (transaction.category === 'entrada') {
+                return 'Pago';
+            }
+            if (transaction.status === 'Pago') {
+                return 'Pago';
+            }
+            if (!transaction.dueDate) {
+                return 'Em Aberto';
+            }
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const dueDate = new Date(transaction.dueDate + 'T00:00:00');
+            dueDate.setHours(0, 0, 0, 0);
+
+            if (dueDate < today) {
+                return 'Atrasado';
+            } else {
+                return 'A Vencer';
+            }
+        }
+
+        async function fetchTransactions() {
+            showElement('loading-screen');
+            hideElement('auth-view');
+            hideElement('dashboard-view');
+
+            try {
+                const response = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?action=getTransactions`);
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                const data = await response.json();
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                transactions = data.map(t => {
+                    // Garante um ID único para cada transação para manipulação DOM
+                    const id = t.id || `${t.description}-${t.amount}-${t.date}-${Math.random().toString(36).substring(2, 9)}`;
+                    const calculatedStatus = getCalculatedStatus(t);
+                    return {
+                        ...t,
+                        id: id,
+                        calculatedStatus: calculatedStatus,
+                        // Garante que as datas sejam strings formatadas para o input date
+                        date: t.date || new Date().toISOString().split('T')[0],
+                        dueDate: t.dueDate || ''
+                    };
+                });
+                transactions.sort((a, b) => new Date(b.date) - new Date(a.date)); // Ordena por data da transação
+
+                renderDashboard(); // Renderiza o dashboard com os novos dados
+            } catch (error) {
+                console.error("Erro ao buscar transações do Apps Script:", error);
+                showNotification(`Erro ao carregar transações: ${error.message}`, 'error');
+                transactions = []; // Limpa as transações em caso de erro
+                renderDashboard(); // Renderiza o dashboard mesmo com erro para mostrar vazio
+            } finally {
+                hideElement('loading-screen');
+                if (currentUser) {
+                    showElement('dashboard-view');
+                } else {
+                    showElement('auth-view');
+                }
+            }
+        }
+
+        async function handleAddOrUpdateTransaction(event) {
+            event.preventDefault();
+            const description = document.getElementById('transaction-description').value;
+            const amount = parseFloat(document.getElementById('transaction-amount').value);
+            const category = document.getElementById('transaction-category').value;
+            const subcategory = document.getElementById('transaction-subcategory').value;
+            const date = document.getElementById('transaction-date').value;
+            const dueDate = document.getElementById('transaction-dueDate').value;
+            const status = document.getElementById('transaction-status').value; // Status do formulário
+
+            if (!description || isNaN(amount) || amount <= 0 || !category || !date) {
+                showNotification('Por favor, preencha todos os campos obrigatórios e um valor positivo.', 'error');
+                return;
+            }
+            if (category === 'saida' && !subcategory) {
+                showNotification('Por favor, selecione uma subcategoria para a saída.', 'error');
+                return;
+            }
+            if (category === 'saida' && !dueDate) {
+                showNotification('Por favor, insira a data de vencimento para a saída.', 'error');
+                return;
+            }
+
+            isSubmitting = true;
+            disableButton('save-transaction-btn');
+
+            const transactionPayload = {
+                description,
+                amount,
+                category,
+                date,
+                ...(category === 'saida' && { subcategory, dueDate }),
+                status: category === 'entrada' ? 'Pago' : status // Entradas são sempre 'Pago', saídas usam o status do formulário
+            };
+
+            try {
+                const action = editingTransaction ? 'updateTransaction' : 'addTransaction';
+                const payload = editingTransaction ? { ...transactionPayload, id: editingTransaction.id } : transactionPayload;
+
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action, payload })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                const result = await response.json();
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                showNotification(`Transação ${editingTransaction ? 'atualizada' : 'adicionada'} com sucesso!`, 'success');
+                closeModal('transaction-modal');
+                fetchTransactions(); // Recarrega os dados
+            } catch (error) {
+                showNotification(`Erro ao salvar transação: ${error.message}`, 'error');
+            } finally {
+                isSubmitting = false;
+                enableButton('save-transaction-btn');
+            }
+        }
+
+        async function handleToggleStatus(transactionId, currentSheetStatus) {
+            isSubmitting = true;
+            // O status enviado para o Apps Script é 'Pago' ou 'Em Aberto'
+            const newStatusForSheet = currentSheetStatus === 'Pago' ? 'Em Aberto' : 'Pago';
+
+            try {
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'updateStatus',
+                        payload: { id: transactionId, status: newStatusForSheet }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                const result = await response.json();
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                showNotification(`Status da transação alterado para "${newStatusForSheet}"!`, 'success');
+                fetchTransactions(); // Recarrega os dados
+            } catch (error) {
+                showNotification(`Erro ao alterar status: ${error.message}`, 'error');
+            } finally {
+                isSubmitting = false;
+            }
+        }
+
+        // --- Funções de Renderização do Dashboard ---
+
+        let incomeExpenseChartInstance = null;
+        let statusChartInstance = null;
+        let expenseBarChartInstance = null;
+
+        function renderCharts() {
+            // Gráfico de Entradas vs Saídas
+            const totalEntradas = transactions.filter(t => t.category === 'entrada').reduce((sum, t) => sum + t.amount, 0);
+            const totalSaidas = transactions.filter(t => t.category === 'saida').reduce((sum, t) => sum + t.amount, 0);
+            const incomeExpenseChartData = [
+                { name: 'Entradas', value: totalEntradas, color: transactionCategories.find(c => c.value === 'entrada').color },
+                { name: 'Saídas', value: totalSaidas, color: transactionCategories.find(c => c.value === 'saida').color },
+            ].filter(d => d.value > 0);
+
+            const ieCtx = document.getElementById('income-expense-chart').getContext('2d');
+            if (incomeExpenseChartInstance) incomeExpenseChartInstance.destroy();
+            if (incomeExpenseChartData.length > 0) {
+                incomeExpenseChartInstance = new Chart(ieCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: incomeExpenseChartData.map(d => d.name),
+                        datasets: [{
+                            data: incomeExpenseChartData.map(d => d.value),
+                            backgroundColor: incomeExpenseChartData.map(d => d.color),
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += `R$ ${context.parsed.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Limpa o canvas se não houver dados
+                ieCtx.clearRect(0, 0, ieCtx.canvas.width, ieCtx.canvas.height);
+            }
+
+
+            // Gráfico de Status Global (A Vencer, Atrasado, Pago)
+            const globalStatusCounts = transactions.reduce((acc, transaction) => {
+                const status = transaction.calculatedStatus;
+                acc[status] = (acc[status] || 0) + 1;
+                return acc;
+            }, {});
+
+            const globalStatusChartData = Object.keys(globalStatusCounts).map(status => ({
+                name: status,
+                value: globalStatusCounts[status],
+                color: STATUS_COLORS[status] || '#CCCCCC'
+            })).filter(d => d.value > 0);
+
+            const statusCtx = document.getElementById('status-chart').getContext('2d');
+            if (statusChartInstance) statusChartInstance.destroy();
+            if (globalStatusChartData.length > 0) {
+                statusChartInstance = new Chart(statusCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: globalStatusChartData.map(d => d.name),
+                        datasets: [{
+                            data: globalStatusChartData.map(d => d.value),
+                            backgroundColor: globalStatusChartData.map(d => d.color),
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += `${context.parsed} transações`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                statusCtx.clearRect(0, 0, statusCtx.canvas.width, statusCtx.canvas.height);
+            }
+
+            // Gráfico de Barras por Subcategoria de Saída (geral)
+            const expenseByCategoryData = transactions
+                .filter(t => t.category === 'saida')
+                .reduce((acc, t) => {
+                    const subcat = expenseSubcategories.find(s => s.value === t.subcategory)?.label || 'Outros';
+                    acc[subcat] = (acc[subcat] || 0) + t.amount;
+                    return acc;
+                }, {});
+
+            const expenseBarChartData = Object.keys(expenseByCategoryData).map(key => ({
+                name: key,
+                value: expenseByCategoryData[key]
+            })).sort((a, b) => b.value - a.value);
+
+            const barCtx = document.getElementById('expense-bar-chart').getContext('2d');
+            if (expenseBarChartInstance) expenseBarChartInstance.destroy();
+            if (expenseBarChartData.length > 0) {
+                expenseBarChartInstance = new Chart(barCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: expenseBarChartData.map(d => d.name),
+                        datasets: [{
+                            label: 'Total Gasto',
+                            data: expenseBarChartData.map(d => d.value),
+                            backgroundColor: '#8884d8', // Cor da barra
+                            borderColor: '#8884d8',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }, // Oculta a legenda do dataset
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += `R$ ${context.parsed.y.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Subcategoria'
+                                },
+                                ticks: {
+                                    autoSkip: false,
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Valor (R$)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return `R$ ${value.toLocaleString('pt-BR')}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                barCtx.clearRect(0, 0, barCtx.canvas.width, barCtx.canvas.height);
+            }
+        }
+
+
+        function renderTransactionsList() {
+            const container = document.getElementById('transactions-history-container');
+            container.innerHTML = ''; // Limpa o conteúdo existente
+
+            if (transactions.length === 0) {
+                showElement('no-transactions-message');
+                return;
+            } else {
+                hideElement('no-transactions-message');
+            }
+
+            // Agrupamento de transações por Mês/Ano
+            const groupedTransactions = transactions.reduce((acc, transaction) => {
+                const transactionDate = new Date(transaction.date + 'T00:00:00');
+                const monthYear = `${transactionDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' })}`;
+                if (!acc[monthYear]) {
+                    acc[monthYear] = [];
+                }
+                acc[monthYear].push(transaction);
+                return acc;
+            }, {});
+
+            // Ordena os meses/anos do mais recente para o mais antigo
+            const sortedMonthYears = Object.keys(groupedTransactions).sort((a, b) => {
+                const [monthA, yearA] = a.split(' de ');
+                const [monthB, yearB] = b.split(' de ');
+                const dateA = new Date(`${monthA} 1, ${yearA}`);
+                const dateB = new Date(`${monthB} 1, ${yearB}`);
+                return dateB - dateA;
+            });
+
+            sortedMonthYears.forEach(monthYear => {
+                const monthYearDiv = document.createElement('div');
+                monthYearDiv.className = 'mb-8';
+                monthYearDiv.innerHTML = `
+                    <h3 class="text-xl font-semibold text-gray-800 bg-gray-100 p-3 rounded-md mb-4 sticky top-0 z-10">${monthYear}</h3>
+                    <ul class="space-y-4" id="list-${monthYear.replace(/\s/g, '-')}"></ul>
+                `;
+                container.appendChild(monthYearDiv);
+
+                const ul = document.getElementById(`list-${monthYear.replace(/\s/g, '-')}`);
+                groupedTransactions[monthYear]
+                    .sort((a, b) => new Date(b.date) - new Date(a.date)) // Ordena transações dentro do mês/ano
+                    .forEach(transaction => {
+                        const categoryDetails = transactionCategories.find(c => c.value === transaction.category) || { label: 'Desconhecido', color: '#C9CBCF' };
+                        const isEntrada = transaction.category === 'entrada';
+                        const subcategoryLabel = expenseSubcategories.find(sub => sub.value === transaction.subcategory)?.label || '';
+                        const displayStatus = transaction.calculatedStatus;
+                        const statusColorClass = `text-${STATUS_COLORS[displayStatus]?.replace('#', '') || 'gray-700'}`;
+
+                        let statusIconPath;
+                        let statusIconColorClass;
+                        switch (displayStatus) {
+                            case 'Pago':
+                                statusIconPath = "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z";
+                                statusIconColorClass = "text-green-600";
+                                break;
+                            case 'A Vencer':
+                                statusIconPath = "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z";
+                                statusIconColorClass = "text-blue-600";
+                                break;
+                            case 'Atrasado':
+                                statusIconPath = "M12 9v3.75m-9.303 3.376c-.866 1.5.38 3.375 2.07 3.375h13.714c1.69 0 2.936-1.875 2.07-3.375L12.75 3.5c-.866-1.5-3.033-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z";
+                                statusIconColorClass = "text-red-600";
+                                break;
+                            default:
+                                statusIconPath = "";
+                                statusIconColorClass = "";
+                        }
+
+                        const listItem = document.createElement('li');
+                        listItem.className = `p-4 border rounded-lg hover:shadow-md transition-shadow ${displayStatus === 'Pago' ? 'bg-green-50 border-green-200' : displayStatus === 'Atrasado' ? 'bg-red-50 border-red-200' : 'bg-blue-50 border-blue-200'}`;
+                        listItem.innerHTML = `
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                                <div class="flex-1 mb-2 sm:mb-0">
+                                    <div class="flex items-center">
+                                        <span class="inline-block h-3 w-3 rounded-full mr-2" style="background-color: ${categoryDetails.color};"></span>
+                                        <h3 class="text-lg font-medium text-gray-800">${transaction.description}</h3>
+                                    </div>
+                                    <p class="text-sm text-gray-500">
+                                        ${categoryDetails.label}
+                                        ${subcategoryLabel ? ` (${subcategoryLabel})` : ''}
+                                        {' - '}
+                                        ${new Date(transaction.date + 'T00:00:00').toLocaleDateString('pt-BR')}
+                                        ${transaction.dueDate ? ` (Vencimento: ${new Date(transaction.dueDate + 'T00:00:00').toLocaleDateString('pt-BR')})` : ''}
+                                    </p>
+                                    <p class="text-sm font-semibold mt-1 flex items-center ${statusColorClass}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-5 h-5 ${statusIconColorClass}">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="${statusIconPath}" />
+                                        </svg>
+                                        <span class="ml-1">Status: ${displayStatus}</span>
+                                    </p>
+                                </div>
+                                <div class="flex items-center space-x-3 w-full sm:w-auto justify-end">
+                                    <p class="text-lg font-semibold whitespace-nowrap ${isEntrada ? 'text-green-600' : 'text-red-500'}">
+                                        ${isEntrada ? '+' : '-'} R$ ${transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    </p>
+                                    ${transaction.category === 'saida' ? `
+                                    <button data-id="${transaction.id}" data-status="${transaction.status}" class="toggle-status-btn p-2 rounded-full ${displayStatus === 'Pago' ? 'text-green-600 hover:bg-green-100' : 'text-yellow-600 hover:bg-yellow-100'}" title="${displayStatus === 'Pago' ? 'Marcar como Em Aberto' : 'Marcar como Pago'}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-5 h-5">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="${displayStatus === 'Pago' ? 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' : 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z'}" />
+                                        </svg>
+                                    </button>
+                                    ` : ''}
+                                    <button data-id="${transaction.id}" class="edit-transaction-btn p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded-full" title="Editar Transação">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+                                    </button>
+                                    <!-- <button data-id="${transaction.id}" class="delete-transaction-btn p-2 text-red-600 hover:text-red-800 hover:bg-red-100 rounded-full" title="Excluir Transação">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12.56 0c.342.052.682.107 1.022.166m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                                    </button> -->
+                                </div>
+                            </div>
+                        `;
+                        ul.appendChild(listItem);
+
+                        // Adiciona listeners para os botões de editar e toggle status
+                        if (transaction.category === 'saida') {
+                            listItem.querySelector('.toggle-status-btn').addEventListener('click', (e) => {
+                                const id = e.currentTarget.dataset.id;
+                                const status = e.currentTarget.dataset.status;
+                                handleToggleStatus(id, status);
+                            });
+                        }
+                        listItem.querySelector('.edit-transaction-btn').addEventListener('click', (e) => {
+                            const id = e.currentTarget.dataset.id;
+                            const transactionToEdit = transactions.find(t => t.id === id);
+                            if (transactionToEdit) {
+                                openTransactionModalForEdit(transactionToEdit);
+                            }
+                        });
+                    });
+            });
+        }
+
+        function openTransactionModalForEdit(transaction) {
+            editingTransaction = transaction;
+            document.getElementById('transaction-modal-title').textContent = 'Editar Transação';
+            document.getElementById('save-transaction-btn').textContent = 'Guardar Alterações';
+
+            document.getElementById('transaction-description').value = transaction.description;
+            document.getElementById('transaction-amount').value = transaction.amount.toString();
+            document.getElementById('transaction-category').value = transaction.category;
+            document.getElementById('transaction-date').value = transaction.date;
+
+            // Lógica para subcategoria e data de vencimento
+            if (transaction.category === 'saida') {
+                showElement('subcategory-field');
+                showElement('dueDate-field');
+                showElement('status-field'); // Mostrar campo de status para edição manual
+                document.getElementById('transaction-subcategory').value = transaction.subcategory || '';
+                document.getElementById('transaction-dueDate').value = transaction.dueDate || '';
+                document.getElementById('transaction-status').value = transaction.status || 'Em Aberto';
+            } else {
+                hideElement('subcategory-field');
+                hideElement('dueDate-field');
+                hideElement('status-field');
+                document.getElementById('transaction-subcategory').value = '';
+                document.getElementById('transaction-dueDate').value = '';
+                document.getElementById('transaction-status').value = 'Pago'; // Entradas sempre pagas
+            }
+            openModal('transaction-modal');
+        }
+
+        function openTransactionModalForAdd() {
+            editingTransaction = null;
+            document.getElementById('transaction-modal-title').textContent = 'Adicionar Nova Transação';
+            document.getElementById('save-transaction-btn').textContent = 'Adicionar Transação';
+
+            document.getElementById('transaction-description').value = '';
+            document.getElementById('transaction-amount').value = '';
+            document.getElementById('transaction-category').value = 'saida'; // Default
+            document.getElementById('transaction-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('transaction-subcategory').value = '';
+            document.getElementById('transaction-dueDate').value = '';
+            document.getElementById('transaction-status').value = 'Em Aberto'; // Default para novas saídas
+
+            // Garante que os campos de saída estejam visíveis/ocultos corretamente
+            document.getElementById('transaction-category').dispatchEvent(new Event('change')); // Trigger change event
+            openModal('transaction-modal');
+        }
+
+
+        function renderDashboard() {
+            // Atualiza saldo
+            const balance = transactions.reduce((acc, transaction) => {
+                if (transaction.category === 'entrada') {
+                    return acc + transaction.amount;
+                } else if (transaction.category === 'saida') {
+                    return acc - transaction.amount;
+                }
+                return acc;
+            }, 0);
+            document.getElementById('balance-display').textContent = `R$ ${balance.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('balance-display').className = `text-3xl font-bold ${balance >= 0 ? 'text-green-600' : 'text-red-600'}`;
+
+            const totalEntradas = transactions.filter(t => t.category === 'entrada').reduce((sum, t) => sum + t.amount, 0);
+            const totalSaidas = transactions.filter(t => t.category === 'saida').reduce((sum, t) => sum + t.amount, 0);
+            document.getElementById('total-entradas').textContent = `R$ ${totalEntradas.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('total-saidas').textContent = `R$ ${totalSaidas.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            // Renderiza os gráficos
+            renderCharts();
+            // Renderiza a lista de transações
+            renderTransactionsList();
+        }
+
+        // --- Inicialização da Aplicação e Listeners de Eventos ---
+
+        window.onload = () => {
+            // Esconde a tela de carregamento e mostra a autenticação
+            hideElement('loading-screen');
+            showElement('auth-view');
+
+            // Listener de autenticação Firebase
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    currentUser = user;
+                    currentUserId = user.uid;
+                    document.getElementById('user-email-display').textContent = `Sessão iniciada como: ${user.email || 'Anónimo'}`;
+                    document.getElementById('user-id-display').textContent = `ID do Utilizador (Sessão): ${currentUserId}`;
+                    showElement('user-id-display');
+                    hideElement('auth-view');
+                    showElement('dashboard-view');
+                    await fetchTransactions(); // Carrega os dados após o login
+                } else {
+                    currentUser = null;
+                    currentUserId = null;
+                    hideElement('dashboard-view');
+                    showElement('auth-view');
+                    // Tenta login anônimo ou com token inicial se disponível
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await auth.signInWithCustomToken(__initial_auth_token);
+                        } else {
+                            await auth.signInAnonymously();
+                        }
+                    } catch (error) {
+                        console.error("Erro na autenticação inicial:", error);
+                        // Se falhar o login anônimo, permanece na tela de login
+                    }
+                }
+                hideElement('loading-screen'); // Esconde o loading final
+            });
+
+            // Listeners do Formulário de Autenticação
+            const authForm = document.getElementById('auth-form');
+            const authTitle = document.getElementById('auth-title');
+            const authSubmitBtn = document.getElementById('auth-submit-btn');
+            const toggleAuthModeBtn = document.getElementById('toggle-auth-mode-btn');
+            let isLoginMode = true; // Estado inicial do formulário de auth
+
+            authForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('auth-email').value;
+                const password = document.getElementById('auth-password').value;
+                if (isLoginMode) {
+                    handleAuth('login', email, password);
+                } else {
+                    handleAuth('register', email, password);
+                }
+            });
+
+            toggleAuthModeBtn.addEventListener('click', () => {
+                isLoginMode = !isLoginMode;
+                if (isLoginMode) {
+                    authTitle.textContent = 'Aceder ao Controlo Financeiro';
+                    authSubmitBtn.textContent = 'Entrar';
+                    toggleAuthModeBtn.textContent = 'Registe-se';
+                    toggleAuthModeBtn.parentNode.firstChild.nodeValue = 'Não tem uma conta? ';
+                } else {
+                    authTitle.textContent = 'Criar Conta';
+                    authSubmitBtn.textContent = 'Criar Conta';
+                    toggleAuthModeBtn.textContent = 'Faça login';
+                    toggleAuthModeBtn.parentNode.firstChild.nodeValue = 'Já tem uma conta? ';
+                }
+            });
+
+            // Listeners do Dashboard
+            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+            document.getElementById('add-transaction-btn').addEventListener('click', openTransactionModalForAdd);
+            document.getElementById('add-first-transaction-btn').addEventListener('click', openTransactionModalForAdd);
+
+
+            // Listeners do Modal de Transação
+            const transactionForm = document.getElementById('transaction-form');
+            const transactionCategorySelect = document.getElementById('transaction-category');
+
+            transactionForm.addEventListener('submit', handleAddOrUpdateTransaction);
+            document.getElementById('close-transaction-modal-btn').addEventListener('click', () => closeModal('transaction-modal'));
+            document.getElementById('cancel-transaction-btn').addEventListener('click', () => closeModal('transaction-modal'));
+
+            // Lógica para mostrar/ocultar campos de subcategoria, vencimento e status
+            transactionCategorySelect.addEventListener('change', (e) => {
+                if (e.target.value === 'saida') {
+                    showElement('subcategory-field');
+                    showElement('dueDate-field');
+                    showElement('status-field');
+                    document.getElementById('transaction-subcategory').required = true;
+                    document.getElementById('transaction-dueDate').required = true;
+                } else {
+                    hideElement('subcategory-field');
+                    hideElement('dueDate-field');
+                    hideElement('status-field');
+                    document.getElementById('transaction-subcategory').required = false;
+                    document.getElementById('transaction-dueDate').required = false;
+                    document.getElementById('transaction-subcategory').value = ''; // Limpa valor
+                    document.getElementById('transaction-dueDate').value = ''; // Limpa valor
+                    document.getElementById('transaction-status').value = 'Pago'; // Entradas sempre pagas
+                }
+            });
+
+            // Listeners do Modal de Exclusão (ainda desabilitado)
+            document.getElementById('close-delete-modal-btn').addEventListener('click', () => closeModal('delete-modal'));
+            document.getElementById('confirm-delete-btn').addEventListener('click', () => closeModal('delete-modal')); // Apenas fecha o modal
+            // document.getElementById('confirm-delete-btn').addEventListener('click', handleDeleteTransaction); // Ativar quando a função estiver implementada
+        };
+    </script>
 </body>
 </html>
